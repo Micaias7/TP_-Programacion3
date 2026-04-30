@@ -1,0 +1,18 @@
+{
+  "name": "tp.final",
+  "version": "1.0.0",
+  "description": "trabajo final integrador",
+  "license": "ISC",
+  "author": "gutierrez micaias, german cepeda, yamila ayi, emiliana baglioni, compa nuevo",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "express-validator": "^7.3.2",
+    "mysql2": "^3.22.3"
+  }
+}
