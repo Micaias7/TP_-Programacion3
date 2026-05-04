@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "trabajo final integrador",
   "license": "ISC",
-  "author": "gutierrez micaias, german cepeda, yamila ayi, emiliana baglioni, compa nuevo",
+  "author": "Gutierrez Micaias, German Cepeda, Yamila Ayi, Emiliana Baglioni, Francisco Molina",
   "type": "module",
   "main": "index.js",
   "scripts": {
