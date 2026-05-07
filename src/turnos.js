@@ -2,6 +2,9 @@ import express from "express";
 import { pool } from "./db/conexion.js";
 import { testConexion } from "./db/test_conexion.js";
 
+import { router as v1EspecialidadesRutas } from "./rutas/v1/especialidadesRutas.js";
+
+//usar en controladores
 import { check, param } from "express-validator";
 import { validarCampos } from "./middlewares/validarCampos.js";
 
@@ -15,6 +18,10 @@ app.get('/', (req, res) => {
   // console.log("test get");
   res.status(200).send({'estado':'ok', 'msg':'API OK'});  
 });
+
+app.use('/api/v1/especialidades', v1EspecialidadesRutas);
+
+
 
 app.post('/especialidades',
   [
@@ -109,31 +116,29 @@ app.delete('/especialidades/:id_especialidad',
 
 });
 
-app.get('/especialidades', async (req, res) => {
+// app.get('/especialidades', async (req, res) => {
   
-  try {
-    const sql = 'SELECT * FROM especialidades WHERE activo = 1';
+//   try {
+//     const sql = 'SELECT * FROM especialidades WHERE activo = 1';
 
-    const [especialidades, fields] = await pool.query(sql);
+//     const [especialidades, fields] = await pool.query(sql);
 
-    res.status(200).send({
-      'estado': 'ok',
-      'especialidades': especialidades
-    });
+//     res.status(200).send({
+//       'estado': 'ok',
+//       'especialidades': especialidades
+//     });
     
-  } catch (error) {
-    console.log(error);
-  };
-});
+//   } catch (error) {
+//     console.log(error);
+//   };
+// });
 
 app.get('/especialidades/:id_especialidad', async (req, res) => {
   
   try {
     
     const id_especialidad = req.params.id_especialidad;
-
     const sql = 'SELECT * FROM especialidades WHERE activo = 1 AND id_especialidad = ?';
-
     const [especialidades, fields] = await pool.execute(sql, [id_especialidad]);
 
     res.status(200).send({
