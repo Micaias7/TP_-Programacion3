@@ -5,10 +5,10 @@
   "license": "ISC",
   "author": "Gutierrez Micaias, German Cepeda, Yamila Ayi, Emiliana Baglioni, Francisco Molina",
   "type": "module",
-  "main": "index.js",
+  "main": "turnos.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node --watch index.js"
+    "dev": "node --watch src/turnos.js"
   },
   "dependencies": {
     "express": "^5.2.1",
