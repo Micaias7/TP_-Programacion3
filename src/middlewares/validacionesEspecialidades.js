@@ -1,7 +1,7 @@
-import { check, param } from "express-validator";
+import { check } from "express-validator";
 
-export const validarNombre = [
+export const validacionEspecialidades = [
   check('nombre', 'El nombre es obligatorio').notEmpty()
   .isLength({ max: 40 })
-  .withMessage('El nombre no debe ser mayor 40 caracteres')
+  .withMessage('El nombre no debe ser mayor a 40 caracteres')
 ];

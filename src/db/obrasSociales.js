@@ -8,21 +8,21 @@ export default class ObrasSociales {
   };
 
   desactivarObraSocial = async (id_obra_social) => {
-    const sql = "UPDATE obras_sociales SET activo = 0 WHERE id_obra_social = ?";
+    const sql = "UPDATE obras_sociales SET activo = 0 WHERE activo = 1 AND id_obra_social = ?";
     const [result] = await pool.execute(sql, [id_obra_social]);
     return result;
   };
 
   buscarTodas = async () => {
     const sql = "SELECT * FROM obras_sociales WHERE activo = 1";
-    const [obrasSociales, fields] = await pool.query(sql);
+    const [obrasSociales] = await pool.query(sql);
     return obrasSociales;
   };
 
   buscarPorId = async (id_obra_social) => {
     const sql =
       "SELECT * FROM obras_sociales WHERE activo = 1 AND id_obra_social = ?";
-    const [obrasSociales, fields] = await pool.execute(sql, [id_obra_social]);
+    const [obrasSociales] = await pool.execute(sql, [id_obra_social]);
     return obrasSociales;
   };
 
