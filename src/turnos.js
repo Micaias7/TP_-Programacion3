@@ -1,7 +1,7 @@
 import express from "express";
 import { testConexion } from "./db/test_conexion.js";
 import { router as v1EspecialidadesRutas } from "./rutas/v1/especialidadesRutas.js";
-
+import { router as v1ObrasSocialesRutas } from './rutas/v1/obrasSocialesRutas.js';
 const app = express();
 
 await testConexion();
@@ -14,6 +14,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/v1/especialidades', v1EspecialidadesRutas);
+app.use('/api/v1/obras-sociales', v1ObrasSocialesRutas);
 
 process.loadEnvFile();
 const PUERTO = process.env.PUERTO;
