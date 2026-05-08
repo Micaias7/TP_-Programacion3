@@ -3,7 +3,7 @@ import ObrasSocialesServicio from "../servicios/obrasSocialesServicio.js";
 export default class ObrasSocialesControlador {
   constructor() {
     this.obrasSociales = new ObrasSocialesServicio();
-  }
+  };
 
   crearObraSocial = async (req, res) => {
     try {
@@ -16,13 +16,13 @@ export default class ObrasSocialesControlador {
           estado: true,
           msg: `ID Creado ${nuevaObraSocial.insertId}`,
         });
-      }
+      };
     } catch (error) {
       res.status(500).json({
         estado: false,
         msg: "Error interno",
       });
-    }
+    };
   };
 
   desactivarObraSocial = async (req, res) => {
@@ -43,13 +43,13 @@ export default class ObrasSocialesControlador {
           estado: false,
           msg: "Obra Social no encontrada",
         });
-      }
+      };
     } catch (error) {
       res.status(500).json({
         estado: false,
         msg: "Error interno",
       });
-    }
+    };
   };
 
   buscarTodas = async (req, res) => {
@@ -65,7 +65,7 @@ export default class ObrasSocialesControlador {
         estado: false,
         msg: "Error interno",
       });
-    }
+    };
   };
 
   buscarPorId = async (req, res) => {
@@ -79,7 +79,7 @@ export default class ObrasSocialesControlador {
           estado: false,
           msg: "Obra social no encontrada",
         });
-      }
+      };
 
       res.status(200).json({
         estado: true,
@@ -91,7 +91,7 @@ export default class ObrasSocialesControlador {
         estado: false,
         msg: "Error interno",
       });
-    }
+    };
   };
 
   actualizar = async (req, res) => {
@@ -103,7 +103,7 @@ export default class ObrasSocialesControlador {
         return res
           .status(404)
           .json({ estado: false, msg: "Obra social no encontrada" });
-      }
+      };
 
       const { nombre, descripcion, porcentaje_descuento, es_particular } =
         req.body;
@@ -122,6 +122,6 @@ export default class ObrasSocialesControlador {
     } catch (error) {
       console.log(`Error en PUT /obras-sociales/:id ${error}`);
       res.status(500).json({ estado: false, msg: "Error interno" });
-    }
+    };
   };
-}
+};
