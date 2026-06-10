@@ -1,9 +1,26 @@
 import { pool } from "./conexion.js";
 
 export default class ObrasSociales {
-  crearObraSocial = async (nombre) => {
-    const sql = "INSERT INTO obras_sociales (nombre) VALUES (?)";
-    const [result] = await pool.execute(sql, [nombre]);
+  crearObraSocial = async (
+    nombre,
+    descripcion,
+    porcentaje_descuento,
+    es_particular
+  ) => {
+
+    const sql = `
+      INSERT INTO obras_sociales
+      (nombre, descripcion, porcentaje_descuento, es_particular)
+      VALUES (?, ?, ?, ?)
+    `;
+
+    const [result] = await pool.execute(sql, [
+      nombre,
+      descripcion,
+      porcentaje_descuento,
+      es_particular
+    ]);
+
     return result;
   };
 
