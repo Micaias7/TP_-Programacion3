@@ -5,11 +5,26 @@ export default class ObrasSocialesServicio {
     this.obrasSociales = new ObrasSociales();
   }
 
-  crearObraSocial = (nombre) => {
-    return this.obrasSociales.crearObraSocial(nombre);
+  crearObraSocial = (
+    nombre,
+    descripcion,
+    porcentaje_descuento,
+    es_particular
+  ) => {
+    return this.obrasSociales.crearObraSocial(
+      nombre,
+      descripcion,
+      porcentaje_descuento,
+      es_particular
+    );
   };
 
-  desactivarObraSocial = (id_obra_social) => {
+  desactivarObraSocial = async (id_obra_social) => {
+    const existe = await this.obrasSociales.buscarPorId(id_obra_social);
+
+    if (existe.length === 0) {
+      return null;
+    };
     return this.obrasSociales.desactivarObraSocial(id_obra_social);
   };
 
@@ -21,13 +36,20 @@ export default class ObrasSocialesServicio {
     return this.obrasSociales.buscarPorId(id_obra_social);
   };
 
-  actualizar = (
+  actualizar = async (
     id_obra_social,
     nombre,
     descripcion,
     porcentaje_descuento,
     es_particular,
   ) => {
+
+    const existe = await this.obrasSociales.buscarPorId(id_obra_social);
+
+    if (existe.length === 0) {
+      return null;
+    };
+
     return this.obrasSociales.actualizar(
       id_obra_social,
       nombre,
@@ -36,4 +58,4 @@ export default class ObrasSocialesServicio {
       es_particular,
     );
   };
-}
+};
