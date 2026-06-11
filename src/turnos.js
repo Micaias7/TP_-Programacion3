@@ -2,6 +2,7 @@ import express from "express";
 import { testConexion } from "./db/test_conexion.js";
 import { router as v1EspecialidadesRutas } from "./rutas/v1/especialidadesRutas.js";
 import { router as v1ObrasSocialesRutas } from "./rutas/v1/obrasSocialesRutas.js";
+import { router as v1MedicosRutas } from "./rutas/v1/medicosRutas.js";
 import { check, param } from "express-validator";
 import { validarCampos } from "./middlewares/validarCampos.js";
 
@@ -18,6 +19,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/v1/especialidades", v1EspecialidadesRutas);
 app.use("/api/v1/obras-sociales", v1ObrasSocialesRutas);
+app.use("/api/v1/medicos", v1MedicosRutas);
 
 
 process.loadEnvFile();
