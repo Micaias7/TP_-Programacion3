@@ -35,7 +35,7 @@ export default class Medicos {
     };
   };
 
-  buscarRelaciones = async (id_medico) => {
+  buscarObrasSocialesDeMedico = async (id_medico) => {
     const sql = `
       SELECT id_obra_social
       FROM medicos_obras_sociales

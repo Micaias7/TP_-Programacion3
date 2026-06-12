@@ -24,7 +24,7 @@ export default class MedicosServicio {
       throw new Error('Hay obras sociales repetidas en la solicitud');
     };
 
-    const relacionesExistentes =  await this.medicos.buscarRelaciones(id_medico);
+    const relacionesExistentes =  await this.medicos.buscarObrasSocialesDeMedico(id_medico);
 
     const idsExistentes = new Set(
       relacionesExistentes.map(r => r.id_obra_social)
