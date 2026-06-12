@@ -14,10 +14,8 @@ export const validacionObrasSociales = [
   check("porcentaje_descuento")
     .notEmpty()
     .withMessage("El porcentaje es obligatorio")
-    .isFloat({ min: 1, max: 100 })
-    .withMessage("Debe ser un número entre 1 y 100")
-    .matches(/^\d+(\.\d{1,2})?$/)
-    .withMessage("Máximo 2 decimales"),
+    .isInt({ min: 1, max: 100 })
+    .withMessage("Debe ser un número entero entre 1 y 100"),
   check("es_particular")
     .notEmpty()
     .withMessage("es_particular es obligatorio")

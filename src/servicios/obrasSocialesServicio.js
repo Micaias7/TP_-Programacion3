@@ -11,6 +11,9 @@ export default class ObrasSocialesServicio {
     porcentaje_descuento,
     es_particular
   ) => {
+    
+    porcentaje_descuento = porcentaje_descuento / 100;
+
     return this.obrasSociales.crearObraSocial(
       nombre,
       descripcion,
@@ -49,6 +52,8 @@ export default class ObrasSocialesServicio {
     if (existe.length === 0) {
       return null;
     };
+
+    porcentaje_descuento = porcentaje_descuento / 100;
 
     return this.obrasSociales.actualizar(
       id_obra_social,
