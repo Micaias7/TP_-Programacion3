@@ -7,9 +7,14 @@ export default class ObrasSocialesControlador {
 
   crearObraSocial = async (req, res) => {
     try {
-      const { nombre } = req.body;
+      const { nombre, descripcion, porcentaje_descuento, es_particular } = req.body;
 
-      const nuevaObraSocial = await this.obrasSociales.crearObraSocial(nombre);
+      const nuevaObraSocial = await this.obrasSociales.crearObraSocial(
+        nombre,
+        descripcion,
+        porcentaje_descuento,
+        es_particular
+      );
 
       if (nuevaObraSocial.affectedRows > 0) {
         res.status(201).json({
@@ -17,6 +22,7 @@ export default class ObrasSocialesControlador {
           msg: `ID Creado ${nuevaObraSocial.insertId}`,
         });
       };
+
     } catch (error) {
       res.status(500).json({
         estado: false,
@@ -32,7 +38,7 @@ export default class ObrasSocialesControlador {
       const resultado =
         await this.obrasSociales.desactivarObraSocial(id_obra_social);
 
-      if (resultado.affectedRows > 0) {
+      if (resultado) {
         res.status(200).json({
           estado: true,
           msg: "Obra Social desactivada con exito",
@@ -44,6 +50,7 @@ export default class ObrasSocialesControlador {
           msg: "Obra Social no encontrada",
         });
       };
+
     } catch (error) {
       res.status(500).json({
         estado: false,
@@ -59,6 +66,7 @@ export default class ObrasSocialesControlador {
         estado: true,
         obrasSociales: obrasSociales,
       });
+
     } catch (error) {
       console.log(`Error en GET /obras-sociales ${error}`);
       res.status(500).json({
@@ -83,8 +91,9 @@ export default class ObrasSocialesControlador {
 
       res.status(200).json({
         estado: true,
-        obraSocial: obrasSociales[0],
+        obraSocial: obrasSociales,
       });
+
     } catch (error) {
       console.log(`Error en GET /obras-sociales/:id_obra_social ${error}`);
       res.status(500).json({
@@ -98,13 +107,6 @@ export default class ObrasSocialesControlador {
     try {
       const id_obra_social = req.params.id_obra_social;
 
-      const existe = await this.obrasSociales.buscarPorId(id_obra_social);
-      if (existe.length === 0) {
-        return res
-          .status(404)
-          .json({ estado: false, msg: "Obra social no encontrada" });
-      };
-
       const { nombre, descripcion, porcentaje_descuento, es_particular } =
         req.body;
 
@@ -116,9 +118,15 @@ export default class ObrasSocialesControlador {
         es_particular,
       );
 
-      if (result.affectedRows > 0) {
-        res.status(200).json({ estado: true, msg: "Obra social modificada" });
-      }
+      if (!result) {
+        return res.status(404).json({
+          estado: false,
+          msg: "Obra social no encontrada",
+        });
+      };
+
+      res.status(200).json({ estado: true, msg: "Obra social modificada" });
+      
     } catch (error) {
       console.log(`Error en PUT /obras-sociales/:id ${error}`);
       res.status(500).json({ estado: false, msg: "Error interno" });

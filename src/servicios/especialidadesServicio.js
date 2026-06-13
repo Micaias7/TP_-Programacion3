@@ -18,12 +18,25 @@ export default class EspecialidadesServicio {
     return this.especialidades.crearEspecialidad(nombre);
   };
 
-  editarEspecialidad = (id_especialidad, nombre) => {
+  editarEspecialidad = async (id_especialidad, nombre) => {
+
+    const especialidad = await this.especialidades.buscarPorId(id_especialidad);
+
+    if (especialidad.length === 0) {
+      return null;
+    };
+
     return this.especialidades.editarEspecialidad(id_especialidad, nombre);
   };
 
-  eliminarEspecialidad = (id_especialidad) => {
+  eliminarEspecialidad = async (id_especialidad) => {
+
+    const especialidad = await this.especialidades.buscarPorId(id_especialidad);
+
+    if (especialidad.length === 0) {
+      return null;
+    };
+
     return this.especialidades.eliminarEspecialidad(id_especialidad);
   };
-
 };

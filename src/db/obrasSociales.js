@@ -1,9 +1,26 @@
 import { pool } from "./conexion.js";
 
 export default class ObrasSociales {
-  crearObraSocial = async (nombre) => {
-    const sql = "INSERT INTO obras_sociales (nombre) VALUES (?)";
-    const [result] = await pool.execute(sql, [nombre]);
+  crearObraSocial = async (
+    nombre,
+    descripcion,
+    porcentaje_descuento,
+    es_particular
+  ) => {
+
+    const sql = `
+      INSERT INTO obras_sociales
+      (nombre, descripcion, porcentaje_descuento, es_particular)
+      VALUES (?, ?, ?, ?)
+    `;
+
+    const [result] = await pool.execute(sql, [
+      nombre,
+      descripcion,
+      porcentaje_descuento,
+      es_particular
+    ]);
+
     return result;
   };
 
@@ -23,7 +40,7 @@ export default class ObrasSociales {
     const sql =
       "SELECT * FROM obras_sociales WHERE activo = 1 AND id_obra_social = ?";
     const [obrasSociales] = await pool.execute(sql, [id_obra_social]);
-    return obrasSociales;
+    return obrasSociales[0];
   };
 
   actualizar = async (
