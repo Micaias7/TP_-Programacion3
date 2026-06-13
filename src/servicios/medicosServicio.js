@@ -9,8 +9,18 @@ export default class MedicosServicio {
     return this.medicos.buscarPorId(id_medico);
   };
 
-  buscarTodos = async () => {
+  buscarTodos = async (usuario) => {
     const datos = await this.medicos.buscarTodos();
+    if (usuario.rol === 2) {
+      const info = datos.map(({ id_medico, id_usuario, ...medico }) => medico);
+      return info
+    }
+    return datos;
+  };
+
+  buscarPorEspecialidad = async (id_especialidad) => {
+    const datos = await this.medicos.buscarPorEspecialidad(id_especialidad);
+    
     return datos;
   };
 

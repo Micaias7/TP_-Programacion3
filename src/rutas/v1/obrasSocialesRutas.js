@@ -3,15 +3,20 @@ import ObrasSocialesControlador from "../../controladores/obrasSocialesControlad
 import { validarCampos } from "../../middlewares/validarCampos.js";
 import { validarId } from "../../middlewares/validarId.js";
 import { validacionObrasSociales } from "../../middlewares/validacionesObrasSociales.js";
+import autorizarUsuarios from "../../middlewares/autorizarUsuarios.js";
 
 const router = express.Router();
 
 const obrasSocialesControlador = new ObrasSocialesControlador();
 
-router.get("/", obrasSocialesControlador.buscarTodas);
+router.get("/",
+  autorizarUsuarios([3]),
+  obrasSocialesControlador.buscarTodas
+);
 
 router.get(
   "/:id_obra_social",
+  autorizarUsuarios([3]),
   validarId("id_obra_social"),
   validarCampos,
   obrasSocialesControlador.buscarPorId,
@@ -19,6 +24,7 @@ router.get(
 
 router.put(
   "/:id_obra_social",
+  autorizarUsuarios([3]),
   validarId("id_obra_social"),
   validacionObrasSociales,
   validarCampos,
@@ -27,6 +33,7 @@ router.put(
 
 router.post(
   "/",
+  autorizarUsuarios([3]),
   validacionObrasSociales,
   validarCampos,
   obrasSocialesControlador.crearObraSocial,
@@ -34,6 +41,7 @@ router.post(
 
 router.delete(
   "/:id_obra_social",
+  autorizarUsuarios([3]),
   validarId("id_obra_social"),
   validarCampos,
   obrasSocialesControlador.desactivarObraSocial,

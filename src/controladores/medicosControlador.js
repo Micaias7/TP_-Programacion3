@@ -1,86 +1,107 @@
 import MedicosServicio from "../servicios/medicosServicio.js";
 
 export default class MedicosControlador {
- constructor() {
+  constructor() {
     this.medicos = new MedicosServicio();
-  };
+  }
 
   buscarTodos = async (req, res) => {
     try {
-      const medicos = await this.medicos.buscarTodos();
+      const medicos = await this.medicos.buscarTodos(req.user);
 
       res.status(200).json({
         estado: true,
         mensaje: "Médicos encontrados.",
         medicos: medicos,
       });
-
     } catch (error) {
       console.log(`Error en GET /medicos ${error}`);
       res.status(500).json({
         estado: false,
         mensaje: "Error interno",
       });
-    };
+    }
   };
 
-  buscarPorId = async (req, res) => {    
+  buscarPorId = async (req, res) => {
     try {
       const { id_medico } = req.params;
       const medicos = await this.medicos.buscarPorId(id_medico);
 
-      if (!medicos){
-        return res.status(404).json({'estado': false, 'msg': 'Medico no encontrada'});   
-      };
+      if (!medicos) {
+        return res
+          .status(404)
+          .json({ estado: false, msg: "Medico no encontrado" });
+      }
 
       res.status(200).json({
         estado: true,
         mensaje: "Médico encontrado.",
         medicos: medicos,
       });
-
     } catch (error) {
       console.log(`Error en GET /medicos/:id_medico ${error}`);
       res.status(500).json({
         estado: false,
         mensaje: "Error interno",
       });
+    }
+  };
+
+  buscarPorEspecialidad = async (req, res) => {
+    try {
+      const { id_especialidad } = req.params;
+      const medicos = await this.medicos.buscarPorEspecialidad(id_especialidad);
+
+      if (medicos.length === 0) {
+        return res
+          .status(404)
+          .json({ estado: false, msg: "No hay medicos de esa Especialidad" });
+      };
+
+      res.status(200).json({
+        estado: true,
+        mensaje: "Médicos encontrados.",
+        medicos: medicos,
+      });
+    } catch (error) {
+      console.log(`Error en GET /medicos/especialidad/:id_especialidad ${error}`);
+      res.status(500).json({
+        estado: false,
+        mensaje: "Error interno",
+      });
     };
   };
-    
-    asociarEspecialidad = async (req, res)=> {
-        try {
-            const {id_medico} = req.params;
-            const {id_especialidad} = req.body;
-            const result = await this.medicos.asociarEspecialidad (
-                id_medico,
-                id_especialidad
-            );
-            if (result.affectedRows > 0){
-                return res.status(200).json({
-                    estado:true,
-                    msg: "Especialidad asociada"
-                });
-               
-            }
-            res.status(404).json({
-                estado:FinalizationRegistry,
-                msg:"Medico no encontrado"
-            });
-        }catch(error){
-            console.log("ERROR asociarEspecialidad:", error);
-            res.status(500).json({
-                estado:false,
-                msg:"Error interno"
-                
-            });
 
-        }
-    };
+  asociarEspecialidad = async (req, res) => {
+    try {
+      const { id_medico } = req.params;
+      const { id_especialidad } = req.body;
+      const result = await this.medicos.asociarEspecialidad(
+        id_medico,
+        id_especialidad,
+      );
+      if (result.affectedRows > 0) {
+        return res.status(200).json({
+          estado: true,
+          msg: "Especialidad asociada",
+        });
+      }
+      res.status(404).json({
+        estado: FinalizationRegistry,
+        msg: "Medico no encontrado",
+      });
+    } catch (error) {
+      console.log("ERROR asociarEspecialidad:", error);
+      res.status(500).json({
+        estado: false,
+        msg: "Error interno",
+      });
+    }
+  };
 
   asociarMedicoObrasSociales = async (req, res) => {
     try {
-
       const { id_medico } = req.params;
       const { obras_sociales } = req.body;
 
@@ -94,7 +115,7 @@ export default class MedicosControlador {
           estado: false,
           mensaje: "No se crearon las relaciones",
         });
-      };
+      }
 
       return res.status(201).json({
         estado: "ok",
@@ -106,6 +127,6 @@ export default class MedicosControlador {
         estado: false,
         mensaje: `Error en POST /medicos/obras-sociales ${error}`,
       });
-    };
+    }
   };
 };

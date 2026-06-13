@@ -13,9 +13,18 @@ export default class Medicos {
     return medico[0];
   };
 
-  asociarEspecialidad=async (id_medico,id_especialidad) => {
-    const sql = 'UPDATE medicos SET id_especialidad =? WHERE id_medico =?';
-    const [result] = await pool.execute (sql , [id_especialidad , id_medico]);
+  buscarPorEspecialidad = async (id_especialidad) => {
+    const sql = `SELECT u.apellido, u.nombres, u.email, u.foto_path
+                  FROM medicos AS m
+                  INNER JOIN usuarios AS u ON u.id_usuario = m.id_usuario
+                  WHERE m.id_especialidad = ?`;
+    const [medicos] = await pool.execute(sql, [id_especialidad]);
+    return medicos;
+  };
+
+  asociarEspecialidad = async (id_medico, id_especialidad) => {
+    const sql = "UPDATE medicos SET id_especialidad =? WHERE id_medico =?";
+    const [result] = await pool.execute(sql, [id_especialidad, id_medico]);
     return result;
   };
 
@@ -28,7 +37,7 @@ export default class Medicos {
       for (const os of obras_sociales) {
         const sql = `INSERT INTO medicos_obras_sociales (id_medico, id_obra_social) VALUES (?,?);`;
         await conexion.execute(sql, [id_medico, os.id_obra_social]);
-      };
+      }
 
       await conexion.commit();
       await conexion.release();
@@ -38,7 +47,7 @@ export default class Medicos {
       await conexion.rollback();
       await conexion.release();
       return false;
-    };
+    }
   };
 
   buscarObrasSocialesDeMedico = async (id_medico) => {

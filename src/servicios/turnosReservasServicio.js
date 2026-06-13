@@ -11,7 +11,15 @@ export default class TurnosReservasServicio {
     this.obrasSociales = new ObrasSocialesServicio();
   }
 
-  // buscarTodas = async () => {}
+  buscarTodas =  async (usuario) => {
+    // SI ES MEDICO
+    if (usuario.rol === 1) {
+      return this.turnosReservas.turnosDeUnMedico(usuario.id_usuario);
+    } else {
+      // SI ES PACIENTE
+      return this.turnosReservas.turnosDeUnPaciente(usuario.id_usuario);
+    };
+  };
 
   // buscarPorId = async (idTurnoReserva) => {}
 
@@ -22,13 +30,15 @@ export default class TurnosReservasServicio {
 
     const paciente = await this.pacientes.buscarPorId(turnoReserva.id_paciente);
 
-    const obra_social = await this.obrasSociales.buscarPorId(paciente.id_obra_social);
+    const obra_social = await this.obrasSociales.buscarPorId(
+      paciente.id_obra_social,
+    );
 
     let valor = medico.valor_consulta;
 
     if (obra_social.es_particular === 0) {
       valor = valor - obra_social.porcentaje_descuento * valor;
-    };
+    }
 
     turnoReserva.valor_total = valor;
     turnoReserva.id_obra_social = paciente.id_obra_social;

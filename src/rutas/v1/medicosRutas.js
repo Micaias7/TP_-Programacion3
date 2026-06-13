@@ -1,6 +1,6 @@
 import express from "express";
 import MedicosControlador from "../../controladores/medicosControlador.js";
-
+import autorizarUsuarios from "../../middlewares/autorizarUsuarios.js";
 import { param, check } from "express-validator";
 import { validarCampos } from "../../middlewares/validarCampos.js";
 
@@ -8,10 +8,26 @@ const router = express.Router();
 
 const medicosControlador = new MedicosControlador();
 
-router.get("/", medicosControlador.buscarTodos);
+router.get("/",
+  autorizarUsuarios([2, 3]),
+  medicosControlador.buscarTodos
+);
+
+router.get(
+  "/especialidad/:id_especialidad",
+  autorizarUsuarios([2,3]),
+  [
+    param("id_especialidad")
+      .isInt()
+      .withMessage(`El id_especialidad debe ser un número entero.`),
+    validarCampos,
+  ],
+  medicosControlador.buscarPorEspecialidad,
+);
 
 router.get(
   "/:id_medico",
+  autorizarUsuarios([3]),
   [
     param("id_medico")
       .notEmpty()
@@ -23,8 +39,10 @@ router.get(
   medicosControlador.buscarPorId,
 );
 
+
 router.post(
   "/:id_medico/obras-sociales",
+  autorizarUsuarios([3]),
   [
     param("id_medico")
       .notEmpty()
@@ -48,6 +66,7 @@ router.post(
 
 router.put(
   "/:id_medico/especialidad",
+  autorizarUsuarios([3]),
   [
     param("id_medico")
       .isInt()
