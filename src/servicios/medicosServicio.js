@@ -1,57 +1,6 @@
 import Medicos from "../db/medicos.js";
 
 export default class MedicosServicio {
-<<<<<<< HEAD
-    constructor (){
-        this.medicos = new Medicos();
-    };
-
-    buscarTodos=()=>{
-        return this.medicos.buscarTodos();
-    };
-
-    buscarPorId = (id_medico) => {
-        return this.medicos.buscarPorId(id_medico);
-    };
-
-    crearMedico = (
-    id_usuario,
-    id_especialidad,
-    matricula,
-    descripcion,
-    valor_consulta
-) => {
-    return this.medicos.crearMedico(
-        id_usuario,
-        id_especialidad,
-        matricula,
-        descripcion,
-        valor_consulta
-    );
-};
-
-        editarMedico = (
-        id_medico,
-        id_usuario,
-        id_especialidad,
-        matricula,
-        descripcion,
-        valor_consulta
-    ) => {
-        return this.medicos.editarMedico(
-            id_medico,
-            id_usuario,
-            id_especialidad,
-            matricula,
-            descripcion,
-            valor_consulta
-        );
-    };
-
-    eliminarMedico = (id_medico)=>{
-        return this.medicos.eliminarMedico(id_medico);
-    };
-=======
   constructor() {
     this.medicos = new Medicos();
   };
@@ -63,6 +12,10 @@ export default class MedicosServicio {
   buscarTodos = async () => {
     const datos = await this.medicos.buscarTodos();
     return datos;
+  };
+
+  asociarEspecialidad = (id_medico , id_especialidad) =>{
+    return this.medicos.asociarEspecialidad(id_medico , id_especialidad);
   };
 
   asociarMedicoObrasSociales = async (id_medico, obras_sociales) => {
@@ -92,5 +45,4 @@ export default class MedicosServicio {
 
     return this.medicos.relacionarConObraSocial(id_medico, obras_sociales);
   };
->>>>>>> 7bad32091e10428bc81c2da71e71379be0c6fb1a
 };

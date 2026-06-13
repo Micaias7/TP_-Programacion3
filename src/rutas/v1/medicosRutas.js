@@ -1,29 +1,13 @@
 import express from "express";
 import MedicosControlador from "../../controladores/medicosControlador.js";
 
-<<<<<<< HEAD
-=======
 import { param, check } from "express-validator";
 import { validarCampos } from "../../middlewares/validarCampos.js";
 
->>>>>>> 7bad32091e10428bc81c2da71e71379be0c6fb1a
 const router = express.Router();
 
 const medicosControlador = new MedicosControlador();
 
-<<<<<<< HEAD
-router.get ("/", medicosControlador.buscarTodos );
-
-router.get ("/:id_medico", medicosControlador.buscarPorId);
-
-router.post ("/", medicosControlador.crearMedico);
-
-router.put ("/:id_medico",  medicosControlador.editarMedico);
-
-router.delete ("/:id_medico", medicosControlador.eliminarMedico);
-
-export {router};
-=======
 router.get("/", medicosControlador.buscarTodos);
 
 router.get(
@@ -62,5 +46,9 @@ router.post(
   medicosControlador.asociarMedicoObrasSociales,
 );
 
+router.put (
+  "/:id_medico/especialidad",
+  medicosControlador.asociarEspecialidad
+);
+
 export { router };
->>>>>>> 7bad32091e10428bc81c2da71e71379be0c6fb1a

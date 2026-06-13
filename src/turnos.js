@@ -1,6 +1,8 @@
 import express from "express";
 import morgan from "morgan";
 import fs from "fs";
+import cors from "cors";
+// import passport from "passport";
 
 import { testConexion } from "./db/test_conexion.js";
 import { router as v1EspecialidadesRutas } from "./rutas/v1/especialidadesRutas.js";
@@ -16,9 +18,9 @@ await testConexion();
 app.use(cors());
 app.use(express.json());
 
-passport.use(estrategia);
-passport.use(validacion);
-app.use(passport.initialize());
+// passport.use(estrategia);
+// passport.use(validacion);
+// app.use(passport.initialize());
 
 let log =fs.createWriteStream ('.accesos.log', {
   flags : 'a'
