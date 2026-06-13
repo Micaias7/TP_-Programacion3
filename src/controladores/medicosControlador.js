@@ -1,7 +1,7 @@
 import MedicosServicio from "../servicios/medicosServicio.js";
 
 export default class MedicosControlador {
-  constructor() {
+ constructor() {
     this.medicos = new MedicosServicio();
   };
 
@@ -47,6 +47,36 @@ export default class MedicosControlador {
       });
     };
   };
+    
+    asociarEspecialidad = async (req, res)=> {
+        try {
+            const {id_medico} = req.params;
+            const {id_especialidad} = req.body;
+            const result = await this.medicos.asociarEspecialidad (
+                id_medico,
+                id_especialidad
+            );
+            if (result.affectedRows > 0){
+                return res.status(200).json({
+                    estado:true,
+                    msg: "Especialidad asociada"
+                });
+               
+            }
+            res.status(404).json({
+                estado:FinalizationRegistry,
+                msg:"Medico no encontrado"
+            });
+        }catch(error){
+            console.log("ERROR asociarEspecialidad:", error);
+            res.status(500).json({
+                estado:false,
+                msg:"Error interno"
+                
+            });
+
+        }
+    };
 
   asociarMedicoObrasSociales = async (req, res) => {
     try {

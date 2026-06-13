@@ -13,6 +13,12 @@ export default class Medicos {
     return medico[0];
   };
 
+  asociarEspecialidad=async (id_medico,id_especialidad) => {
+    const sql = 'UPDATE medicos SET id_especialidad =? WHERE id_medico =?';
+    const [result] = await pool.execute (sql , [id_especialidad , id_medico]);
+    return result;
+  };
+
   relacionarConObraSocial = async (id_medico, obras_sociales) => {
     const conexion = await pool.getConnection();
 

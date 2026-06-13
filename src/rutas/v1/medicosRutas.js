@@ -46,4 +46,20 @@ router.post(
   medicosControlador.asociarMedicoObrasSociales,
 );
 
+router.put(
+  "/:id_medico/especialidad",
+  [
+    param("id_medico")
+      .isInt()
+      .withMessage("El id_medico debe ser un número entero."),
+
+    check("id_especialidad")
+      .isInt()
+      .withMessage("El id_especialidad debe ser un número entero."),
+
+    validarCampos
+  ],
+  medicosControlador.asociarEspecialidad
+);
+
 export { router };

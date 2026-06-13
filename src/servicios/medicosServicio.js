@@ -14,6 +14,10 @@ export default class MedicosServicio {
     return datos;
   };
 
+  asociarEspecialidad = (id_medico , id_especialidad) =>{
+    return this.medicos.asociarEspecialidad(id_medico , id_especialidad);
+  };
+
   asociarMedicoObrasSociales = async (id_medico, obras_sociales) => {
 
     const ids = obras_sociales.map(os => os.id_obra_social);
