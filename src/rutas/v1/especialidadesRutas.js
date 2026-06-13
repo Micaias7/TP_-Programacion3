@@ -21,6 +21,7 @@ router.get(
 
 router.get(
   "/:id_especialidad",
+  autorizarUsuarios([3]),
   validarId("id_especialidad"),
   validarCampos,
   especialidadesControlador.buscarPorId,
@@ -28,6 +29,7 @@ router.get(
 
 router.post(
   "/",
+  autorizarUsuarios([3]),
   validacionEspecialidades,
   validarCampos,
   especialidadesControlador.crearEspecialidad,
@@ -35,6 +37,7 @@ router.post(
 
 router.put(
   "/:id_especialidad",
+  autorizarUsuarios([3]),
   validarId("id_especialidad"),
   validacionEspecialidades,
   validarCampos,
@@ -43,6 +46,7 @@ router.put(
 
 router.delete(
   "/:id_especialidad",
+  autorizarUsuarios([3]),
   validarId("id_especialidad"),
   validarCampos,
   especialidadesControlador.eliminarEspecialidad,

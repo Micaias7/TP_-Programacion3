@@ -37,8 +37,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1/especialidades", passport.authenticate('jwt', {session:false}), v1EspecialidadesRutas);
-app.use("/api/v1/obras-sociales", v1ObrasSocialesRutas);
-app.use("/api/v1/medicos", v1MedicosRutas);
+app.use("/api/v1/obras-sociales", passport.authenticate('jwt', {session:false}), v1ObrasSocialesRutas);
+app.use("/api/v1/medicos", passport.authenticate('jwt', {session:false}), v1MedicosRutas);
 app.use('/api/v1/turnos-reservas', passport.authenticate('jwt', {session:false}), v1TurnosReservas);
 
 app.use('/api/v1/auth', v1AuthRutas);

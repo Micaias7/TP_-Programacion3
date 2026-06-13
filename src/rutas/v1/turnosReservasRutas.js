@@ -13,12 +13,13 @@ router.get('/', autorizarUsuarios([1,2]), turnosReservasControlador.buscarTodos)
 
 router.post(
   "/",
+  autorizarUsuarios([3]),
   [
     check("id_medico").notEmpty().withMessage("El id_medico es obligatorio."),
     check("id_paciente")
       .notEmpty()
-      .withMessage("El id_paciente es obligatoria."),
-    check("fecha_hora").notEmpty().withMessage("La fecha_hora es obligatorio."),
+      .withMessage("El id_paciente es obligatorio."),
+    check("fecha_hora").notEmpty().withMessage("La fecha_hora es obligatoria."),
     validarCampos,
   ],
   turnosReservasControlador.crear,

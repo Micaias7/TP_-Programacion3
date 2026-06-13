@@ -11,7 +11,7 @@ export default class TurnosReservasServicio {
     this.obrasSociales = new ObrasSocialesServicio();
   }
 
-  buscarTodas = async (usuario) => {
+  buscarTodas =  async (usuario) => {
     // SI ES MEDICO
     if (usuario.rol === 1) {
       return this.turnosReservas.turnosDeUnMedico(usuario.id_usuario);
