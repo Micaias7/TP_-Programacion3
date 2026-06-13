@@ -3,7 +3,7 @@ import TurnosReservasServicios from "../servicios/turnosReservasServicio.js";
 export default class TurnosReservasControlador {
   constructor() {
     this.turnosReservas = new TurnosReservasServicios();
-  };
+  }
 
   crear = async (req, res) => {
     try {
@@ -17,7 +17,7 @@ export default class TurnosReservasControlador {
           estado: false,
           mensaje: "No se pudo crear el turno.",
         });
-      };
+      }
 
       return res.status(201).json({
         estado: true,
@@ -30,6 +30,24 @@ export default class TurnosReservasControlador {
         estado: false,
         mensaje: "Error interno.",
       });
+    }
+  };
+
+  buscarTodos = async (req, res) => {
+    try {
+      const turnos = await this.turnosReservas.buscarTodas(req.user);
+
+      res.status(200).json({
+        estado: true,
+        mensaje: "Turnos encontrados.",
+        turnos: turnos,
+      });
+    } catch (error) {
+      console.log(`Error en GET /turnos ${error}`);
+      res.status(500).json({
+        estado: false,
+        mensaje: "Error interno",
+      });
     };
   };
-};
+}
