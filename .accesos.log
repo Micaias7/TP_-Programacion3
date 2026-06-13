@@ -1,2 +1,4 @@
 ::ffff:127.0.0.1 - - [11/Jun/2026:22:19:50 +0000] "GET /api/v1/especialidades HTTP/1.1" 200 315 "-" "bruno-runtime/1.0"
 ::ffff:127.0.0.1 - - [11/Jun/2026:22:38:04 +0000] "GET /api/v1/medicos HTTP/1.1" 200 504 "-" "bruno-runtime/1.0"
+::ffff:127.0.0.1 - - [11/Jun/2026:23:20:39 +0000] "GET /api/v1/medicos HTTP/1.1" 200 504 "-" "bruno-runtime/1.0"
+::ffff:127.0.0.1 - - [11/Jun/2026:23:20:45 +0000] "GET /api/v1/medicos/1 HTTP/1.1" 200 143 "-" "bruno-runtime/1.0"
