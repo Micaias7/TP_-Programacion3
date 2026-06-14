@@ -9,7 +9,7 @@ const router = express.Router();
 
 const turnosReservasControlador = new TurnosReservasControlador();
 
-router.get('/', autorizarUsuarios([1,2]), turnosReservasControlador.buscarTodos);
+router.get('/', autorizarUsuarios([1, 2]), turnosReservasControlador.buscarTodos);
 
 router.post(
   "/",
@@ -23,6 +23,54 @@ router.post(
     validarCampos,
   ],
   turnosReservasControlador.crear,
+);
+
+/**
+ * @swagger
+ * /api/v1/turnos-reservas/{id_turno_reserva}:
+ *   put:
+ *     summary: Marcar turno como atendido
+ *     description: Permite a un médico logueado marcar un turno como atendido. Solo puede marcar sus propios turnos.
+ *     tags:
+ *       - Turnos Reservas
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id_turno_reserva
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID del turno a marcar como atendido
+ *     responses:
+ *       200:
+ *         description: Turno marcado como atendido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 estado:
+ *                   type: boolean
+ *                   example: true
+ *                 mensaje:
+ *                   type: string
+ *                   example: Turno marcado como atendido.
+ *       403:
+ *         description: Acceso denegado
+ *       404:
+ *         description: Turno no encontrado o no pertenece al médico logueado
+ *       500:
+ *         description: Error interno
+ */
+
+router.put(
+  '/:id_turno_reserva',
+  autorizarUsuarios([1]),
+  [
+    param('id_turno_reserva', 'El id_turno_reserva debe ser un número').isInt({ min: 1 }),
+    validarCampos,
+  ], turnosReservasControlador.marcarAtendido,
 );
 
 export { router };
