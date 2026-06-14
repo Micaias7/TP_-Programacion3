@@ -88,7 +88,7 @@ export default class MedicosControlador {
         });
       }
       res.status(404).json({
-        estado: FinalizationRegistry,
+        estado: false,
         msg: "Medico no encontrado",
       });
     } catch (error) {

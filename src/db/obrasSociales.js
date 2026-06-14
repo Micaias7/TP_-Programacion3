@@ -40,7 +40,7 @@ export default class ObrasSociales {
     const sql =
       "SELECT * FROM obras_sociales WHERE activo = 1 AND id_obra_social = ?";
     const [obrasSociales] = await pool.execute(sql, [id_obra_social]);
-    return obrasSociales[0];
+    return obrasSociales;
   };
 
   actualizar = async (

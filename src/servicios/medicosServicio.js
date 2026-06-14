@@ -1,8 +1,10 @@
 import Medicos from "../db/medicos.js";
+import EspecialidadesServicio from "./especialidadesServicio.js";
 
 export default class MedicosServicio {
   constructor() {
     this.medicos = new Medicos();
+    this.especialidadesServicio = new EspecialidadesServicio();
   };
 
   buscarPorId = (id_medico) => {
@@ -24,7 +26,12 @@ export default class MedicosServicio {
     return datos;
   };
 
-  asociarEspecialidad = (id_medico , id_especialidad) =>{
+  asociarEspecialidad = async (id_medico , id_especialidad) =>{
+    const datos = await this.especialidadesServicio.buscarPorId(id_especialidad);
+    if (datos.length === 0) {
+      throw new Error('La especialidad es invalida');
+    };
+
     return this.medicos.asociarEspecialidad(id_medico , id_especialidad);
   };
 
