@@ -4,5 +4,5 @@ node_modules/
 # Entorno
 .env
 .env.*
-
+accesos.log
 .DS_Store
