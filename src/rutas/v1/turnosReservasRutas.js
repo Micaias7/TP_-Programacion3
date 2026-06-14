@@ -9,7 +9,7 @@ const router = express.Router();
 
 const turnosReservasControlador = new TurnosReservasControlador();
 
-router.get('/', autorizarUsuarios([1,2]), turnosReservasControlador.buscarTodos);
+router.get('/', autorizarUsuarios([1, 2]), turnosReservasControlador.buscarTodos);
 
 router.post(
   "/",
@@ -23,6 +23,15 @@ router.post(
     validarCampos,
   ],
   turnosReservasControlador.crear,
+);
+
+router.put(
+  '/:id_turno_reserva',
+  autorizarUsuarios([1]),
+  [
+    param('id_turno_reserva', 'El id_turno_reserva debe ser un número').isInt({ min: 1 }),
+    validarCampos,
+  ], turnosReservasControlador.marcarAtendido,
 );
 
 export { router };
