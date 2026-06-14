@@ -3,6 +3,7 @@ import { Strategy as LocalSrategy } from "passport-local";
 
 import UsuariosServicio from "../servicios/usuariosServicio.js";
 
+
 const estrategia = new LocalSrategy(
   {
     usernameField: "email",

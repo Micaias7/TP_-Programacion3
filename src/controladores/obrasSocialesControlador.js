@@ -132,4 +132,43 @@ export default class ObrasSocialesControlador {
       res.status(500).json({ estado: false, msg: "Error interno" });
     };
   };
+
+  asociarPaciente = async (req, res) => {
+
+  try {
+
+    const { id_obra_social, id_paciente } = req.params;
+
+    const result =
+      await this.obrasSociales.asociarPaciente(
+        id_paciente,
+        id_obra_social
+      );
+
+    if (result.affectedRows > 0) {
+      return res.status(200).json({
+        estado: true,
+        msg: "Paciente asociado a la obra social"
+      });
+    }
+
+    res.status(404).json({
+      estado: false,
+      msg: "Paciente no encontrado"
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      estado: false,
+      msg: "Error interno"
+    });
+
+  }
 };
+
+};
+
+

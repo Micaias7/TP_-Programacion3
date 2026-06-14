@@ -31,6 +31,14 @@ router.put(
   obrasSocialesControlador.actualizar,
 );
 
+router.put(
+  "/:id_obra_social/pacientes/:id_paciente",
+  autorizarUsuarios([3]),
+  validarId("id_obra_social"),
+  validarId("id_paciente"),
+  obrasSocialesControlador.asociarPaciente
+);
+
 router.post(
   "/",
   autorizarUsuarios([3]),

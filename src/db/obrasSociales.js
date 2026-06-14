@@ -61,4 +61,21 @@ export default class ObrasSociales {
     ]);
     return result;
   };
+
+  asociarPaciente = async (id_paciente, id_obra_social) => {
+
+    const sql = `
+        UPDATE pacientes
+        SET id_obra_social = ?
+        WHERE id_paciente = ?
+    `;
+
+    const [result] = await pool.execute(sql, [
+        id_obra_social,
+        id_paciente
+    ]);
+
+    return result;
+};
+
 }

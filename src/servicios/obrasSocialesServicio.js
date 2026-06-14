@@ -1,8 +1,12 @@
 import ObrasSociales from "../db/obrasSociales.js";
+import PacientesServicio from "./pacientesServicio.js";
+
 
 export default class ObrasSocialesServicio {
+
   constructor() {
     this.obrasSociales = new ObrasSociales();
+    this.pacientesServicio = new PacientesServicio();
   }
 
   crearObraSocial = (
@@ -63,4 +67,28 @@ export default class ObrasSocialesServicio {
       es_particular,
     );
   };
+
+  
+asociarPaciente = async (id_paciente, id_obra_social) => {
+
+const obraSocial = await this.obrasSociales.buscarPorId(id_obra_social);
+
+  if (obraSocial.length === 0) {
+    throw new Error("La obra social es inválida");
+  }
+
+  const paciente =
+    await this.pacientesServicio.buscarPorId(id_paciente);
+
+  if (!paciente) {
+    throw new Error("El paciente es inválido");
+  }
+
+  return await this.obrasSociales.asociarPaciente(
+    id_paciente,
+    id_obra_social
+  );
 };
+
+};
+
