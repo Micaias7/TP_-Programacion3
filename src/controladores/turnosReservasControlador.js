@@ -36,7 +36,6 @@ export default class TurnosReservasControlador {
   buscarTodos = async (req, res) => {
     try {
       const turnos = await this.turnosReservas.buscarTodas(req.user);
-
       res.status(200).json({
         estado: true,
         mensaje: "Turnos encontrados.",
@@ -50,4 +49,58 @@ export default class TurnosReservasControlador {
       });
     };
   };
+
+  desactivarTurno = async (req, res) => {
+    try {
+      const { id } = req.params;
+
+      const resultado = await this.turnosReservas.desactivarTurno(id);
+
+      if (!resultado) {
+        return res.status(404).json({
+          estado: false,
+          mensaje: "Turno no encontrado.",
+        });
+      };
+
+      return res.status(200).json({
+        estado: true,
+        mensaje: "Turno desactivado con éxito.",
+        id: id,
+      });
+    } catch (error) {
+      console.log(`Error en DELETE /turnos-reservas/:id ${error}`);
+      res.status(500).json({
+        estado: false,
+        mensaje: "Error interno.",
+      });
+    };
+  };
+modificarFecha = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { fecha_hora } = req.body;
+
+    const resultado = await this.turnosReservas.modificarFecha(id, fecha_hora);
+
+    if (!resultado) {
+      return res.status(404).json({
+        estado: false,
+        mensaje: "Turno no encontrado.",
+      });
+    };
+
+    return res.status(200).json({
+      estado: true,
+      mensaje: "Fecha del turno actualizada con éxito.",
+      id: id,
+    });
+  } catch (error) {
+    console.log(`Error en PUT /turnos-reservas/:id ${error}`);
+    res.status(500).json({
+      estado: false,
+      mensaje: "Error interno.",
+    });
+  };
+};
 }
