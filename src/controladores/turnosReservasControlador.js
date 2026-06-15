@@ -5,12 +5,12 @@ export default class TurnosReservasControlador {
     this.turnosReservas = new TurnosReservasServicios();
   }
 
-  crear = async (req, res) => {
+  crearTurno = async (req, res) => {
     try {
       const { id_medico, id_paciente, fecha_hora } = req.body;
       const turnoReserva = { id_medico, id_paciente, fecha_hora };
 
-      const nuevoTurnoReserva = await this.turnosReservas.crear(turnoReserva);
+      const nuevoTurnoReserva = await this.turnosReservas.crearTurno(turnoReserva);
 
       if (!nuevoTurnoReserva || nuevoTurnoReserva.length === 0) {
         return res.status(400).json({
@@ -26,6 +26,46 @@ export default class TurnosReservasControlador {
       });
     } catch (error) {
       console.log(`Error en POST /turnos-reservas ${error}`);
+        if (error.status) {
+          return res.status(error.status).json({
+            estado: false,
+            mensaje: error.message,
+          });
+        }
+      res.status(500).json({
+        estado: false,
+        mensaje: "Error interno.",
+      });
+    }
+  };
+
+  crearTurnoPropio = async (req, res) => {
+    try {
+      const { id_medico, fecha_hora } = req.body;
+
+      const turnoReserva = {
+        id_medico,
+        fecha_hora,
+        id_usuario: req.user.id_usuario,
+      };
+
+      const nuevoTurnoReserva =
+        await this.turnosReservas.crearTurnoPropio(turnoReserva);
+
+      return res.status(201).json({
+        estado: true,
+        mensaje: "Turno creado.",
+        datos: nuevoTurnoReserva,
+      });
+    } catch (error) {
+      console.log(`Error en POST /turnos-reservas/mis-turnos ${error}`);
+      if (error.status) {
+        return res.status(error.status).json({
+          estado: false,
+          mensaje: error.message,
+        });
+      }
+
       res.status(500).json({
         estado: false,
         mensaje: "Error interno.",
@@ -61,7 +101,7 @@ export default class TurnosReservasControlador {
           estado: false,
           mensaje: "Turno no encontrado.",
         });
-      };
+      }
 
       return res.status(200).json({
         estado: true,
@@ -74,7 +114,7 @@ export default class TurnosReservasControlador {
         estado: false,
         mensaje: "Error interno.",
       });
-    };
+    }
   };
 
   modificarFecha = async (req, res) => {
@@ -92,7 +132,7 @@ export default class TurnosReservasControlador {
           estado: false,
           mensaje: "Turno no encontrado.",
         });
-      };
+      }
 
       return res.status(200).json({
         estado: true,
@@ -105,7 +145,7 @@ export default class TurnosReservasControlador {
         estado: false,
         mensaje: "Error interno.",
       });
-    };
+    }
   };
 
   marcarAtendido = async (req, res) => {
@@ -113,7 +153,10 @@ export default class TurnosReservasControlador {
       const id_turno_reserva = req.params.id_turno_reserva;
       const id_usuario = req.user.id_usuario;
 
-      const result = await this.turnosReservas.marcarAtendido(id_turno_reserva, id_usuario);
+      const result = await this.turnosReservas.marcarAtendido(
+        id_turno_reserva,
+        id_usuario,
+      );
 
       if (result.affectedRows === 0) {
         return res.status(404).json({
@@ -126,14 +169,12 @@ export default class TurnosReservasControlador {
         estado: true,
         mensaje: "Turno marcado como atendido.",
       });
-
     } catch (error) {
-      console.log(`Error en PUT /turnos-reservas/:id_turno_reserva ${error}`);
+      console.log(`Error en PUT /turnos-reservas/medico/:id_turno_reserva ${error}`);
       res.status(500).json({
         estado: false,
         mensaje: "Error interno",
       });
     }
   };
-
 }

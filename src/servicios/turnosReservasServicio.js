@@ -45,14 +45,27 @@ export default class TurnosReservasServicio {
     return this.turnosReservas.modificarFecha(id_turno_reserva, fecha_hora);
   };
 
-  crear = async (turnoReserva) => {
+  crearTurno = async (turnoReserva) => {
     const medico = await this.medicos.buscarPorId(turnoReserva.id_medico);
+    if (!medico) {
+      const error = new Error("Médico no encontrado.");
+      error.status = 404;
+      throw error;
+    }
 
     const paciente = await this.pacientes.buscarPorId(turnoReserva.id_paciente);
+    if (!paciente) {
+      const error = new Error("Paciente no encontrado.");
+      error.status = 404;
+      throw error;
+    }
 
-    const obra_social = await this.obrasSociales.buscarPorId(
-      paciente.id_obra_social,
-    );
+    const obra_social = await this.obrasSociales.buscarPorId(paciente.id_obra_social);
+    if (!obra_social) {
+      const error = new Error("Obra social no encontrada.");
+      error.status = 404;
+      throw error;
+    }
 
     let valor = medico.valor_consulta;
 
@@ -63,12 +76,50 @@ export default class TurnosReservasServicio {
     turnoReserva.valor_total = valor;
     turnoReserva.id_obra_social = paciente.id_obra_social;
 
-    const id_nuevo = await this.turnosReservas.crear(turnoReserva);
+    const id_nuevo = await this.turnosReservas.crearTurno(turnoReserva);
     return id_nuevo;
   };
 
-  marcarAtendido = async (id_turno_reserva, id_usuario) => {
-    return await this.turnosReservas.marcarAtendido(id_turno_reserva, id_usuario);
+  crearTurnoPropio = async (turnoReserva) => {
+    
+    const paciente = await this.pacientes.buscarPorUsuario(turnoReserva.id_usuario);
+    if (!paciente) {
+      const error = new Error("Paciente no encontrado.");
+      error.status = 404;
+      throw error;
+    }
+
+    const medico = await this.medicos.buscarPorId(turnoReserva.id_medico);
+    if (!medico) {
+      const error = new Error("Médico no encontrado.");
+      error.status = 404;
+      throw error;
+    }
+
+    const obra_social = await this.obrasSociales.buscarPorId(paciente.id_obra_social);
+    if (!obra_social) {
+      const error = new Error("Obra social no encontrada.");
+      error.status = 404;
+      throw error;
+    }
+
+    let valor = medico.valor_consulta;
+
+    if (obra_social.es_particular === 0) {
+      valor = valor - obra_social.porcentaje_descuento * valor;
+    }
+
+    turnoReserva.id_paciente = paciente.id_paciente;
+    turnoReserva.id_obra_social = paciente.id_obra_social;
+    turnoReserva.valor_total = valor;
+
+    return await this.turnosReservas.crearTurno(turnoReserva);
   };
 
+  marcarAtendido = async (id_turno_reserva, id_usuario) => {
+    return await this.turnosReservas.marcarAtendido(
+      id_turno_reserva,
+      id_usuario,
+    );
+  };
 };

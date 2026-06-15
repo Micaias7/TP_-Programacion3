@@ -53,6 +53,10 @@ router.get('/', autorizarUsuarios([1, 2]), turnosReservasControlador.buscarTodos
  * /api/v1/turnos-reservas:
  *   post:
  *     summary: Crear un turno
+ *     description: |
+ *       Permite a un administrador crear un turno para un paciente.
+ *       El sistema calculará automáticamente el valor final de la consulta
+ *       según la obra social asociada al paciente.
  *     tags:
  *       - Turnos Reservas
  *     security:
@@ -63,32 +67,69 @@ router.get('/', autorizarUsuarios([1, 2]), turnosReservasControlador.buscarTodos
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - id_medico
+ *               - id_paciente
+ *               - fecha_hora
  *             properties:
  *               id_medico:
  *                 type: integer
  *                 example: 1
  *               id_paciente:
  *                 type: integer
- *                 example: 1
+ *                 example: 5
  *               fecha_hora:
  *                 type: string
- *                 example: 2026-06-15 10:00:00
+ *                 example: "2026-07-10 15:30:00"
  *     responses:
  *       201:
- *         description: Turno creado
+ *         description: Turno creado correctamente
+ *         content:
+ *           application/json:
+ *             example:
+ *               estado: true
+ *               mensaje: Turno Creado.
+ *               datos: 15
  *       400:
  *         description: No se pudo crear el turno
+ *         content:
+ *           application/json:
+ *             example:
+ *               estado: false
+ *               mensaje: No se pudo crear el turno.
  *       401:
  *         description: Token inválido o no proporcionado
  *       403:
- *         description: Usuario sin permisos para acceder al recurso
+ *         description: Acceso denegado
  *         content:
  *           application/json:
- *              example:
- *                estado: false
- *                mensaje: Acceso Denegado 
+ *             example:
+ *               estado: false
+ *               mensaje: Acceso Denegado
+ *       404:
+ *         description: Recurso relacionado no encontrado
+ *         content:
+ *           application/json:
+ *             examples:
+ *               paciente:
+ *                 value:
+ *                   estado: false
+ *                   mensaje: Paciente no encontrado.
+ *               medico:
+ *                 value:
+ *                   estado: false
+ *                   mensaje: Médico no encontrado.
+ *               obraSocial:
+ *                 value:
+ *                   estado: false
+ *                   mensaje: Obra social no encontrada.
  *       500:
- *         description: Error interno
+ *         description: Error interno del servidor
+ *         content:
+ *           application/json:
+ *             example:
+ *               estado: false
+ *               mensaje: Error interno.
  */
 
 router.post(
@@ -100,7 +141,100 @@ router.post(
     check("fecha_hora").notEmpty().withMessage("La fecha_hora es obligatoria."),
     validarCampos,
   ],
-  turnosReservasControlador.crear,
+  turnosReservasControlador.crearTurno,
+);
+
+/**
+ * @swagger
+ * /api/v1/turnos-reservas/mis-turnos:
+ *   post:
+ *     summary: Reservar un turno para el paciente autenticado
+ *     description: |
+ *       Permite a un paciente crear un turno médico utilizando su propia cuenta.
+ *
+ *       El sistema obtiene automáticamente:
+ *       - El paciente asociado al usuario autenticado.
+ *       - La obra social asociada al paciente.
+ *       - El valor final de la consulta aplicando descuentos según corresponda.
+ *
+ *       El paciente únicamente debe indicar el médico y la fecha/hora deseada.
+ *     tags:
+ *       - Turnos Reservas
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - id_medico
+ *               - fecha_hora
+ *             properties:
+ *               id_medico:
+ *                 type: integer
+ *                 example: 3
+ *               fecha_hora:
+ *                 type: string
+ *                 format: date-time
+ *                 example: "2026-07-10 15:30:00"
+ *     responses:
+ *       201:
+ *         description: Turno creado correctamente
+ *         content:
+ *           application/json:
+ *             example:
+ *               estado: true
+ *               mensaje: Turno creado.
+ *               datos: 15
+ *       401:
+ *         description: Token inválido o no proporcionado
+ *       403:
+ *         description: Acceso denegado
+ *         content:
+ *           application/json:
+ *             example:
+ *               estado: false
+ *               mensaje: Acceso Denegado
+ *       404:
+ *         description: Recurso relacionado no encontrado
+ *         content:
+ *           application/json:
+ *             examples:
+ *               paciente:
+ *                 summary: Paciente no encontrado
+ *                 value:
+ *                   estado: false
+ *                   mensaje: Paciente no encontrado
+ *               medico:
+ *                 summary: Médico no encontrado
+ *                 value:
+ *                   estado: false
+ *                   mensaje: Médico no encontrado.
+ *               obraSocial:
+ *                 summary: Obra social no encontrada
+ *                 value:
+ *                   estado: false
+ *                   mensaje: Obra social no encontrada.
+ *       500:
+ *         description: Error interno del servidor
+ *         content:
+ *           application/json:
+ *             example:
+ *               estado: false
+ *               mensaje: Error interno.
+ */
+
+router.post(
+  "/mis-turnos",
+  autorizarUsuarios([2]),
+  [
+    check("id_medico").notEmpty().withMessage("El id_medico es obligatorio."),
+    check("fecha_hora").notEmpty().withMessage("La fecha_hora es obligatoria."),
+    validarCampos,
+  ],
+  turnosReservasControlador.crearTurnoPropio
 );
 
 /**

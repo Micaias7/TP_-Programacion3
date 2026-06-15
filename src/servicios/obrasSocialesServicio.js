@@ -15,11 +15,16 @@ export default class ObrasSocialesServicio {
     porcentaje_descuento,
     es_particular
   ) => {
-    
+
+    const nombreNormalizado = nombre
+      .trim()
+      .replace(/\s+/g, " ")
+      .toUpperCase();
+
     porcentaje_descuento = porcentaje_descuento / 100;
 
     return this.obrasSociales.crearObraSocial(
-      nombre,
+      nombreNormalizado,
       descripcion,
       porcentaje_descuento,
       es_particular

@@ -15,7 +15,12 @@ export default class EspecialidadesServicio {
   };
 
   crearEspecialidad = (nombre) => {
-    return this.especialidades.crearEspecialidad(nombre);
+    const nombreNormalizado = nombre
+      .trim()
+      .replace(/\s+/g, " ")
+      .toUpperCase();
+
+    return this.especialidades.crearEspecialidad(nombreNormalizado);
   };
 
   editarEspecialidad = async (id_especialidad, nombre) => {
