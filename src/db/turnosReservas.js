@@ -40,4 +40,20 @@ export default class TurnosReservas {
     const [turnos] = await pool.execute(sql, [id_usuario]);
     return turnos;
   };
+  buscarPorId = async (id_turno_reserva) => {
+    const sql = `SELECT * FROM turnos_reservas WHERE activo = 1 AND id_turno_reserva = ?`;
+    const [rows] = await pool.execute(sql, [id_turno_reserva]);
+    return rows;
+  };
+
+  desactivarTurno = async (id_turno_reserva) => {
+    const sql = `UPDATE turnos_reservas SET activo = 0 WHERE activo = 1 AND id_turno_reserva = ?`;
+    const [result] = await pool.execute(sql, [id_turno_reserva]);
+    return result;
+  };
+modificarFecha = async (id_turno_reserva, fecha_hora) => {
+  const sql = `UPDATE turnos_reservas SET fecha_hora = ? WHERE activo = 1 AND id_turno_reserva = ?`;
+  const [result] = await pool.execute(sql, [fecha_hora, id_turno_reserva]);
+  return result;
+};
 };

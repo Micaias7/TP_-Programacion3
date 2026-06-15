@@ -25,6 +25,28 @@ export default class TurnosReservasServicio {
 
   // modificar = async () => {}
 
+    buscarPorId = async (id_turno_reserva) => {
+    return this.turnosReservas.buscarPorId(id_turno_reserva);
+  };
+
+  desactivarTurno = async (id_turno_reserva) => {
+    const existe = await this.turnosReservas.buscarPorId(id_turno_reserva);
+
+    if (existe.length === 0) {
+      return null;
+    };
+
+    return this.turnosReservas.desactivarTurno(id_turno_reserva);
+  };
+  modificarFecha = async (id_turno_reserva, fecha_hora) => {
+  const existe = await this.turnosReservas.buscarPorId(id_turno_reserva);
+
+  if (existe.length === 0) {
+    return null;
+  };
+
+  return this.turnosReservas.modificarFecha(id_turno_reserva, fecha_hora);
+};
   crear = async (turnoReserva) => {
     const medico = await this.medicos.buscarPorId(turnoReserva.id_medico);
 

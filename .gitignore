@@ -5,3 +5,4 @@ node_modules/
 .env
 .env.*
 accesos.log
+.DS_Store
