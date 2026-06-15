@@ -40,6 +40,13 @@ export default class TurnosReservas {
     const [turnos] = await pool.execute(sql, [id_usuario]);
     return turnos;
   };
+
+  turnosActivos = async () => {
+    const sql = `SELECT * FROM turnos_reservas WHERE activo = 1`;
+    const [rows] = await pool.execute(sql);
+    return rows;
+  };
+
   buscarPorId = async (id_turno_reserva) => {
     const sql = `SELECT * FROM turnos_reservas WHERE activo = 1 AND id_turno_reserva = ?`;
     const [rows] = await pool.execute(sql, [id_turno_reserva]);
@@ -51,7 +58,7 @@ export default class TurnosReservas {
     const [result] = await pool.execute(sql, [id_turno_reserva]);
     return result;
   };
-  
+
   modificarFecha = async (id_turno_reserva, fecha_hora) => {
     const sql = `UPDATE turnos_reservas SET fecha_hora = ? WHERE activo = 1 AND id_turno_reserva = ?`;
     const [result] = await pool.execute(sql, [fecha_hora, id_turno_reserva]);
@@ -67,4 +74,13 @@ export default class TurnosReservas {
     return result;
   };
 
+  porEspecialidad = async () => {
+    const sql = `CALL sp_reporte_turnos_ultimo_mes()`;
+    const [datos] = await pool.execute(sql);
+
+    return {
+      especialidades: datos[0],
+      medicos: datos[1],
+    };
+  };
 };

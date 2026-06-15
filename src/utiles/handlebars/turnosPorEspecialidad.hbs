@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Reporte Completo</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      margin: 30px;
+      color: #333;
+    }
+
+    .portada {
+      text-align: center;
+      margin-top: 150px;
+      page-break-after: always;
+    }
+
+    .seccion {
+      margin-top: 30px;
+      page-break-after: always;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      border: 1px solid #000;
+      padding: 8px;
+    }
+
+    th {
+      background: #f2f2f2;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .right {
+      text-align: right;
+    }
+
+    tr {
+      page-break-inside: avoid;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ================= PORTADA ================= -->
+  <div class="portada">
+    <h1>Reporte General de Turnos</h1>
+    <p>Sistema de Gestión Médica</p>
+    <p>Fecha: {{fecha_reporte}}</p>
+    <p>Hora: {{hora_reporte}}</p>
+  </div>
+
+  <!-- ================= ESPECIALIDADES ================= -->
+  <div class="seccion">
+    <h2>Especialidades</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Especialidad</th>
+          <th>Turnos</th>
+          <th>Facturación</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {{#each especialidades}}
+        <tr>
+          <td>{{especialidad}}</td>
+          <td class="center">{{cantidad_de_turnos}}</td>
+          <td class="right">$ {{money facturacion_total}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ================= MÉDICOS ================= -->
+  <div class="seccion">
+    <h2>Médicos</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Apellido</th>
+          <th>Nombre</th>
+          <th>Turnos</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {{#each medicos}}
+        <tr>
+          <td>{{id_medico}}</td>
+          <td>{{apellido}}</td>
+          <td>{{nombres}}</td>
+          <td class="center">{{cantidad_de_turnos}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+
+</body>
+
+</html>

@@ -18,6 +18,7 @@ const turnosReservasControlador = new TurnosReservasControlador();
  *
  *       - Si el usuario tiene rol Médico (1), devuelve los turnos asignados a ese médico.
  *       - Si el usuario tiene rol Paciente (2), devuelve los turnos reservados por ese paciente.
+ *       - Si el usuario tiene rol Administrador (3), devuelve todos los turnos activos.
  *     tags:
  *       - Turnos Reservas
  *     security:
@@ -46,7 +47,35 @@ const turnosReservasControlador = new TurnosReservasControlador();
  *         description: Error interno del servidor
  */
 
-router.get('/', autorizarUsuarios([1, 2]), turnosReservasControlador.buscarTodos);
+router.get('/', autorizarUsuarios([1, 2, 3]), turnosReservasControlador.buscarTodos);
+
+/**
+  * @swagger
+  * /api/v1/turnos-reservas/por-especialidad:
+  *   get:
+  *     summary: Reporte de turnos por especialidad (PDF)
+  *     description: Genera un informe en PDF con especialidades, cantidad de turnos y facturación total del ultimo mes, incluyendo médicos.
+  *     tags:
+  *       - Turnos Reservas
+  *     security:
+  *       - bearerAuth: []
+  *     responses:
+  *       200:
+  *         description: PDF generado correctamente
+  *         content:
+  *           application/pdf:
+  *             schema:
+  *               type: string
+  *               format: binary
+  *       401:
+  *         description: No autorizado (token inválido o ausente)
+  *       403:
+  *         description: No tiene permisos suficientes
+  *       500:
+  *         description: Error interno del servidor
+  */
+
+router.get('/por-especialidad',autorizarUsuarios([3]), turnosReservasControlador.porEspecialidad);
 
 /**
  * @swagger

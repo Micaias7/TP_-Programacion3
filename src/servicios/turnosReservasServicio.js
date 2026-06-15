@@ -2,6 +2,7 @@ import TurnosReservas from "../db/turnosReservas.js";
 import MedicosServicio from "../servicios/medicosServicio.js";
 import PacientesServicio from "../servicios/pacientesServicio.js";
 import ObrasSocialesServicio from "../servicios/obrasSocialesServicio.js";
+import InformeServicio from "./informesServicio.js";
 
 export default class TurnosReservasServicio {
   constructor() {
@@ -9,15 +10,19 @@ export default class TurnosReservasServicio {
     this.medicos = new MedicosServicio();
     this.pacientes = new PacientesServicio();
     this.obrasSociales = new ObrasSocialesServicio();
+    this.informes = new InformeServicio();
   }
 
   buscarTodas = async (usuario) => {
     // SI ES MEDICO
     if (usuario.rol === 1) {
       return this.turnosReservas.turnosDeUnMedico(usuario.id_usuario);
-    } else {
+    } else if (usuario.rol === 2) {
       // SI ES PACIENTE
       return this.turnosReservas.turnosDeUnPaciente(usuario.id_usuario);
+    } else {
+      // SI ES ADMIN
+      return this.turnosReservas.turnosActivos();
     }
   };
 
@@ -60,7 +65,9 @@ export default class TurnosReservasServicio {
       throw error;
     }
 
-    const obra_social = await this.obrasSociales.buscarPorId(paciente.id_obra_social);
+    const obra_social = await this.obrasSociales.buscarPorId(
+      paciente.id_obra_social,
+    );
     if (!obra_social) {
       const error = new Error("Obra social no encontrada.");
       error.status = 404;
@@ -81,8 +88,9 @@ export default class TurnosReservasServicio {
   };
 
   crearTurnoPropio = async (turnoReserva) => {
-    
-    const paciente = await this.pacientes.buscarPorUsuario(turnoReserva.id_usuario);
+    const paciente = await this.pacientes.buscarPorUsuario(
+      turnoReserva.id_usuario,
+    );
     if (!paciente) {
       const error = new Error("Paciente no encontrado.");
       error.status = 404;
@@ -96,7 +104,9 @@ export default class TurnosReservasServicio {
       throw error;
     }
 
-    const obra_social = await this.obrasSociales.buscarPorId(paciente.id_obra_social);
+    const obra_social = await this.obrasSociales.buscarPorId(
+      paciente.id_obra_social,
+    );
     if (!obra_social) {
       const error = new Error("Obra social no encontrada.");
       error.status = 404;
@@ -121,5 +131,15 @@ export default class TurnosReservasServicio {
       id_turno_reserva,
       id_usuario,
     );
+  };
+
+  porEspecialidad = async () => {
+    const datos = await this.turnosReservas.porEspecialidad();
+
+    const pdf = await this.informes.reporteCompletoTurnos(datos);
+
+    return {
+      buffer: pdf,
+    };
   };
 };

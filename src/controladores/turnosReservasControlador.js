@@ -180,4 +180,24 @@ export default class TurnosReservasControlador {
       });
     }
   };
+
+  porEspecialidad = async (req, res) => {
+    try {
+      const { buffer } = await this.turnosReservas.porEspecialidad();
+
+      res.setHeader("Content-Type", "application/pdf");
+      res.setHeader(
+        "Content-Disposition",
+        'inline; filename="reporte_turnos.pdf"',
+      );
+
+      res.status(200).end(buffer);
+    } catch (error) {
+      console.log(`Error en GET /turnos-reservas/por-especialidad ${error}`);
+      res.status(500).json({
+        estado: false,
+        mensaje: "Error interno",
+      });
+    }
+  };
 }
