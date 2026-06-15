@@ -10,7 +10,8 @@ export default class TurnosReservasControlador {
       const { id_medico, id_paciente, fecha_hora } = req.body;
       const turnoReserva = { id_medico, id_paciente, fecha_hora };
 
-      const nuevoTurnoReserva = await this.turnosReservas.crearTurno(turnoReserva);
+      const nuevoTurnoReserva =
+        await this.turnosReservas.crearTurno(turnoReserva);
 
       if (!nuevoTurnoReserva || nuevoTurnoReserva.length === 0) {
         return res.status(400).json({
@@ -21,17 +22,17 @@ export default class TurnosReservasControlador {
 
       return res.status(201).json({
         estado: true,
-        mensaje: "Turno Creado.",
-        datos: nuevoTurnoReserva,
+        mensaje: "Turno creado con exito.",
+        datos: `ID Turno ${nuevoTurnoReserva}`,
       });
     } catch (error) {
       console.log(`Error en POST /turnos-reservas ${error}`);
-        if (error.status) {
-          return res.status(error.status).json({
-            estado: false,
-            mensaje: error.message,
-          });
-        }
+      if (error.status) {
+        return res.status(error.status).json({
+          estado: false,
+          mensaje: error.message,
+        });
+      }
       res.status(500).json({
         estado: false,
         mensaje: "Error interno.",
@@ -54,8 +55,8 @@ export default class TurnosReservasControlador {
 
       return res.status(201).json({
         estado: true,
-        mensaje: "Turno creado.",
-        datos: nuevoTurnoReserva,
+        mensaje: "Turno creado con exito.",
+        datos: `Turno ${nuevoTurnoReserva}`,
       });
     } catch (error) {
       console.log(`Error en POST /turnos-reservas/mis-turnos ${error}`);
@@ -170,7 +171,9 @@ export default class TurnosReservasControlador {
         mensaje: "Turno marcado como atendido.",
       });
     } catch (error) {
-      console.log(`Error en PUT /turnos-reservas/medico/:id_turno_reserva ${error}`);
+      console.log(
+        `Error en PUT /turnos-reservas/medico/:id_turno_reserva ${error}`,
+      );
       res.status(500).json({
         estado: false,
         mensaje: "Error interno",

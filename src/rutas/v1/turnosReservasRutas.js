@@ -88,8 +88,8 @@ router.get('/', autorizarUsuarios([1, 2]), turnosReservasControlador.buscarTodos
  *           application/json:
  *             example:
  *               estado: true
- *               mensaje: Turno Creado.
- *               datos: 15
+ *               mensaje: Turno Creado con exito.
+ *               datos: Turno 15
  *       400:
  *         description: No se pudo crear el turno
  *         content:
@@ -186,8 +186,8 @@ router.post(
  *           application/json:
  *             example:
  *               estado: true
- *               mensaje: Turno creado.
- *               datos: 15
+ *               mensaje: Turno Creado con exito.
+ *               datos: Turno 15
  *       401:
  *         description: Token inválido o no proporcionado
  *       403:
