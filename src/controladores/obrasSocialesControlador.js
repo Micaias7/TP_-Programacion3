@@ -65,6 +65,7 @@ export default class ObrasSocialesControlador {
       res.status(200).json({
         estado: true,
         obrasSociales: obrasSociales,
+        msg: "Lista de obras sociales",
       });
 
     } catch (error) {
