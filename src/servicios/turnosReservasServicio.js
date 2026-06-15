@@ -67,6 +67,40 @@ export default class TurnosReservasServicio {
     return id_nuevo;
   };
 
+  crearTurnoPropio = async (turnoReserva) => {
+
+  const paciente =
+    await this.pacientes.buscarPorUsuario(
+      turnoReserva.id_usuario
+    );
+
+  if (!paciente) {
+    throw new Error("Paciente no encontrado");
+  }
+
+  const medico =
+    await this.medicos.buscarPorId(
+      turnoReserva.id_medico
+    );
+
+  const obra_social =
+    await this.obrasSociales.buscarPorId(
+      paciente.id_obra_social
+    );
+
+  let valor = medico.valor_consulta;
+
+  if (obra_social.es_particular === 0) {
+    valor = valor - obra_social.porcentaje_descuento * valor;
+  }
+
+  turnoReserva.id_paciente = paciente.id_paciente;
+  turnoReserva.id_obra_social = paciente.id_obra_social;
+  turnoReserva.valor_total = valor;
+
+  return await this.turnosReservas.crear(turnoReserva);
+};
+
   marcarAtendido = async (id_turno_reserva, id_usuario) => {
     return await this.turnosReservas.marcarAtendido(id_turno_reserva, id_usuario);
   };

@@ -22,6 +22,17 @@ router.post(
   turnosReservasControlador.crear,
 );
 
+router.post(
+  "/mis-turnos",
+  autorizarUsuarios([2]),
+  [
+    check("id_medico").notEmpty().withMessage("El id_medico es obligatorio."),
+    check("fecha_hora").notEmpty().withMessage("La fecha_hora es obligatoria."),
+    validarCampos,
+  ],
+  turnosReservasControlador.crearTurnoPropio
+);
+
 router.delete(
   "/:id",
   autorizarUsuarios([3]),

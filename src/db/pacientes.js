@@ -7,4 +7,18 @@ export default class Pacientes {
         const [paciente] = await pool.execute(sql, [id_paciente]);
         return paciente[0];
     };
+
+
+        buscarPorUsuario = async (id_usuario) => {
+    const sql = `
+        SELECT *
+        FROM pacientes
+        WHERE id_usuario = ?
+    `;
+
+    const [pacientes] = await pool.execute(sql, [id_usuario]);
+
+    return pacientes[0];
+};
+
 };

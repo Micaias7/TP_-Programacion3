@@ -8,4 +8,12 @@ export default class PacientesServicio {
   buscarPorId = (id_paciente) => {
     return this.pacientes.buscarPorId(id_paciente);
   };
+
+  buscarPorUsuario = (id_usuario) => {
+  return this.pacientes.buscarPorUsuario(id_usuario);
 };
+
+}
+
+
+

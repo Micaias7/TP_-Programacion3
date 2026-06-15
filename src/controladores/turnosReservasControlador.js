@@ -33,6 +33,38 @@ export default class TurnosReservasControlador {
     }
   };
 
+  crearTurnoPropio = async (req, res) => {
+  try {
+
+    const { id_medico, fecha_hora } = req.body;
+
+    const turnoReserva = {
+      id_medico,
+      fecha_hora,
+      id_usuario: req.user.id_usuario
+    };
+
+    const nuevoTurnoReserva =
+      await this.turnosReservas.crearTurnoPropio(turnoReserva);
+
+    return res.status(201).json({
+      estado: true,
+      mensaje: "Turno creado.",
+      datos: nuevoTurnoReserva,
+    });
+
+  } catch (error) {
+
+    console.log(`Error en POST /turnos-reservas/mis-turnos ${error}`);
+
+    res.status(500).json({
+      estado: false,
+      mensaje: "Error interno.",
+    });
+
+  }
+};
+
   buscarTodos = async (req, res) => {
     try {
       const turnos = await this.turnosReservas.buscarTodas(req.user);
