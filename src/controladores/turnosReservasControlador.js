@@ -47,7 +47,7 @@ export default class TurnosReservasControlador {
         estado: false,
         mensaje: "Error interno",
       });
-    };
+    }
   };
 
   desactivarTurno = async (req, res) => {
@@ -76,31 +76,35 @@ export default class TurnosReservasControlador {
       });
     };
   };
-modificarFecha = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { fecha_hora } = req.body;
 
-    const resultado = await this.turnosReservas.modificarFecha(id, fecha_hora);
+  modificarFecha = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { fecha_hora } = req.body;
 
-    if (!resultado) {
-      return res.status(404).json({
+      const resultado = await this.turnosReservas.modificarFecha(
+        id,
+        fecha_hora,
+      );
+
+      if (!resultado) {
+        return res.status(404).json({
+          estado: false,
+          mensaje: "Turno no encontrado.",
+        });
+      };
+
+      return res.status(200).json({
+        estado: true,
+        mensaje: "Fecha del turno actualizada con éxito.",
+        id: id,
+      });
+    } catch (error) {
+      console.log(`Error en PUT /turnos-reservas/:id ${error}`);
+      res.status(500).json({
         estado: false,
-        mensaje: "Turno no encontrado.",
+        mensaje: "Error interno.",
       });
     };
-
-    return res.status(200).json({
-      estado: true,
-      mensaje: "Fecha del turno actualizada con éxito.",
-      id: id,
-    });
-  } catch (error) {
-    console.log(`Error en PUT /turnos-reservas/:id ${error}`);
-    res.status(500).json({
-      estado: false,
-      mensaje: "Error interno.",
-    });
   };
 };
-}

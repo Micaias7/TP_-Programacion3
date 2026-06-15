@@ -29,14 +29,16 @@ router.delete(
   validarCampos,
   turnosReservasControlador.desactivarTurno,
 );
+
 router.put(
   "/:id",
   autorizarUsuarios([3]),
+  validarId("id"),
   [
-    validarId("id"),
     check("fecha_hora").notEmpty().withMessage("La fecha_hora es obligatoria."),
     validarCampos,
   ],
   turnosReservasControlador.modificarFecha,
 );
+
 export { router };

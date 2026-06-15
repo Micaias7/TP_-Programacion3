@@ -11,21 +11,17 @@ export default class TurnosReservasServicio {
     this.obrasSociales = new ObrasSocialesServicio();
   }
 
-  buscarTodas =  async (usuario) => {
+  buscarTodas = async (usuario) => {
     // SI ES MEDICO
     if (usuario.rol === 1) {
       return this.turnosReservas.turnosDeUnMedico(usuario.id_usuario);
     } else {
       // SI ES PACIENTE
       return this.turnosReservas.turnosDeUnPaciente(usuario.id_usuario);
-    };
+    }
   };
 
-  // buscarPorId = async (idTurnoReserva) => {}
-
-  // modificar = async () => {}
-
-    buscarPorId = async (id_turno_reserva) => {
+  buscarPorId = async (id_turno_reserva) => {
     return this.turnosReservas.buscarPorId(id_turno_reserva);
   };
 
@@ -34,19 +30,21 @@ export default class TurnosReservasServicio {
 
     if (existe.length === 0) {
       return null;
-    };
+    }
 
     return this.turnosReservas.desactivarTurno(id_turno_reserva);
   };
-  modificarFecha = async (id_turno_reserva, fecha_hora) => {
-  const existe = await this.turnosReservas.buscarPorId(id_turno_reserva);
 
-  if (existe.length === 0) {
-    return null;
+  modificarFecha = async (id_turno_reserva, fecha_hora) => {
+    const existe = await this.turnosReservas.buscarPorId(id_turno_reserva);
+
+    if (existe.length === 0) {
+      return null;
+    }
+
+    return this.turnosReservas.modificarFecha(id_turno_reserva, fecha_hora);
   };
 
-  return this.turnosReservas.modificarFecha(id_turno_reserva, fecha_hora);
-};
   crear = async (turnoReserva) => {
     const medico = await this.medicos.buscarPorId(turnoReserva.id_medico);
 
