@@ -36,6 +36,7 @@ router.put(
   autorizarUsuarios([3]),
   validarId("id_obra_social"),
   validarId("id_paciente"),
+  validarCampos,
   obrasSocialesControlador.asociarPaciente
 );
 
