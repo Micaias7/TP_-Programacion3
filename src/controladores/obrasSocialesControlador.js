@@ -83,7 +83,7 @@ export default class ObrasSocialesControlador {
       const obrasSociales =
         await this.obrasSociales.buscarPorId(id_obra_social);
 
-      if (obrasSociales.length === 0) {
+      if (!obrasSociales) {
         return res.status(404).json({
           estado: false,
           msg: "Obra social no encontrada",

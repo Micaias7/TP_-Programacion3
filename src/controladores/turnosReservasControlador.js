@@ -27,8 +27,8 @@ export default class TurnosReservasControlador {
 
       return res.status(201).json({
         estado: true,
-        mensaje: "Turno Creado.",
-        datos: nuevoTurnoReserva,
+        mensaje: "Turno creado con exito.",
+        datos: `ID Turno ${nuevoTurnoReserva}`,
       });
     } catch (error) {
       console.log(`Error en POST /turnos-reservas ${error}`);
@@ -60,8 +60,8 @@ export default class TurnosReservasControlador {
 
       return res.status(201).json({
         estado: true,
-        mensaje: "Turno creado.",
-        datos: nuevoTurnoReserva,
+        mensaje: "Turno creado con exito.",
+        datos: `Turno ${nuevoTurnoReserva}`,
       });
     } catch (error) {
       console.log(`Error en POST /turnos-reservas/mis-turnos ${error}`);
@@ -231,6 +231,7 @@ export default class TurnosReservasControlador {
       console.log(
         `Error en PUT /turnos-reservas/medico/:id_turno_reserva/observaciones ${error}`,
       );
+
       res.status(500).json({
         estado: false,
         mensaje: "Error interno",
