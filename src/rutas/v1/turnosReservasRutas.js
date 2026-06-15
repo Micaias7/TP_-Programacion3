@@ -46,7 +46,11 @@ const turnosReservasControlador = new TurnosReservasControlador();
  *         description: Error interno del servidor
  */
 
-router.get('/', autorizarUsuarios([1, 2]), turnosReservasControlador.buscarTodos);
+router.get(
+  "/",
+  autorizarUsuarios([1, 2]),
+  turnosReservasControlador.buscarTodos,
+);
 
 /**
  * @swagger
@@ -81,6 +85,9 @@ router.get('/', autorizarUsuarios([1, 2]), turnosReservasControlador.buscarTodos
  *               fecha_hora:
  *                 type: string
  *                 example: "2026-07-10 15:30:00"
+ *               observaciones:
+ *                 type: string
+ *                 example: "Paciente informa dolor de cabeza leve después de la consulta."
  *     responses:
  *       201:
  *         description: Turno creado correctamente
@@ -137,7 +144,9 @@ router.post(
   autorizarUsuarios([3]),
   [
     check("id_medico").notEmpty().withMessage("El id_medico es obligatorio."),
-    check("id_paciente").notEmpty().withMessage("El id_paciente es obligatorio."),
+    check("id_paciente")
+      .notEmpty()
+      .withMessage("El id_paciente es obligatorio."),
     check("fecha_hora").notEmpty().withMessage("La fecha_hora es obligatoria."),
     validarCampos,
   ],
@@ -234,7 +243,7 @@ router.post(
     check("fecha_hora").notEmpty().withMessage("La fecha_hora es obligatoria."),
     validarCampos,
   ],
-  turnosReservasControlador.crearTurnoPropio
+  turnosReservasControlador.crearTurnoPropio,
 );
 
 /**
@@ -340,12 +349,71 @@ router.put(
  */
 
 router.put(
-  '/medico/:id_turno_reserva',
+  "/medico/:id_turno_reserva",
   autorizarUsuarios([1]),
   [
-    param('id_turno_reserva', 'El id_turno_reserva debe ser un número').isInt({ min: 1 }),
+    param("id_turno_reserva", "El id_turno_reserva debe ser un número").isInt({
+      min: 1,
+    }),
     validarCampos,
-  ], turnosReservasControlador.marcarAtendido,
+  ],
+  turnosReservasControlador.marcarAtendido,
+);
+
+/**
+ * @swagger
+ * /api/v1/turnos-reservas/medico/{id_turno_reserva}/observaciones:
+ *   put:
+ *     summary: Agregar o actualizar observaciones del médico para un turno
+ *     tags:
+ *       - Turnos Reservas
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id_turno_reserva
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - observaciones
+ *             properties:
+ *               observaciones:
+ *                 type: string
+ *                 example: "Paciente con presión estable, continuar tratamiento."
+ *     responses:
+ *       200:
+ *         description: Observaciones actualizadas correctamente
+ *       400:
+ *         description: Solicitud inválida
+ *       401:
+ *         description: Token inválido o no proporcionado
+ *       403:
+ *         description: Usuario sin permisos para acceder al recurso
+ *       404:
+ *         description: Turno no encontrado o no pertenece al médico logueado
+ *       500:
+ *         description: Error interno
+ */
+router.put(
+  "/medico/:id_turno_reserva/observaciones",
+  autorizarUsuarios([1]),
+  [
+    param("id_turno_reserva", "El id_turno_reserva debe ser un número").isInt({
+      min: 1,
+    }),
+    check("observaciones")
+      .notEmpty()
+      .withMessage("Las observaciones son obligatorias."),
+    validarCampos,
+  ],
+  turnosReservasControlador.actualizarObservaciones,
 );
 
 /**
@@ -382,7 +450,7 @@ router.put(
  *           application/json:
  *              example:
  *                estado: false
- *                mensaje: Acceso Denegado 
+ *                mensaje: Acceso Denegado
  *       404:
  *         description: Turno no encontrado
  *         content:

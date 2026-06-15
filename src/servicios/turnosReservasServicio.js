@@ -60,7 +60,9 @@ export default class TurnosReservasServicio {
       throw error;
     }
 
-    const obra_social = await this.obrasSociales.buscarPorId(paciente.id_obra_social);
+    const obra_social = await this.obrasSociales.buscarPorId(
+      paciente.id_obra_social,
+    );
     if (!obra_social) {
       const error = new Error("Obra social no encontrada.");
       error.status = 404;
@@ -81,8 +83,9 @@ export default class TurnosReservasServicio {
   };
 
   crearTurnoPropio = async (turnoReserva) => {
-    
-    const paciente = await this.pacientes.buscarPorUsuario(turnoReserva.id_usuario);
+    const paciente = await this.pacientes.buscarPorUsuario(
+      turnoReserva.id_usuario,
+    );
     if (!paciente) {
       const error = new Error("Paciente no encontrado.");
       error.status = 404;
@@ -96,7 +99,9 @@ export default class TurnosReservasServicio {
       throw error;
     }
 
-    const obra_social = await this.obrasSociales.buscarPorId(paciente.id_obra_social);
+    const obra_social = await this.obrasSociales.buscarPorId(
+      paciente.id_obra_social,
+    );
     if (!obra_social) {
       const error = new Error("Obra social no encontrada.");
       error.status = 404;
@@ -122,4 +127,21 @@ export default class TurnosReservasServicio {
       id_usuario,
     );
   };
-};
+
+  actualizarObservaciones = async (
+    id_turno_reserva,
+    id_usuario,
+    observaciones,
+  ) => {
+    const turno = await this.turnosReservas.buscarPorId(id_turno_reserva);
+    if (!turno || turno.length === 0) {
+      return null;
+    }
+
+    return await this.turnosReservas.actualizarObservaciones(
+      id_turno_reserva,
+      id_usuario,
+      observaciones,
+    );
+  };
+}

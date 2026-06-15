@@ -2,16 +2,23 @@ import { pool } from "./conexion.js";
 
 export default class TurnosReservas {
   crearTurno = async (turnoReserva) => {
-    const { id_medico, id_paciente, id_obra_social, fecha_hora, valor_total } =
-      turnoReserva;
-    const sql = `INSERT INTO turnos_reservas (id_medico, id_paciente, id_obra_social, fecha_hora, valor_total)
-             VALUES (?,?,?,?,?)`;
+    const {
+      id_medico,
+      id_paciente,
+      id_obra_social,
+      fecha_hora,
+      valor_total,
+      observaciones,
+    } = turnoReserva;
+    const sql = `INSERT INTO turnos_reservas (id_medico, id_paciente, id_obra_social, fecha_hora, valor_total, observaciones)
+             VALUES (?,?,?,?,?,?)`;
     const [result] = await pool.execute(sql, [
       id_medico,
       id_paciente,
       id_obra_social,
       fecha_hora,
       valor_total,
+      observaciones || null,
     ]);
     if (result.affectedRows === 0) {
       return null;
@@ -20,7 +27,8 @@ export default class TurnosReservas {
   };
 
   turnosDeUnMedico = async (id_usuario) => {
-    const sql = `SELECT tr.fecha_hora, up.documento, up.nombres, up.apellido, tr.valor_total
+    const sql = `SELECT tr.id_turno_reserva, tr.fecha_hora, tr.valor_total, tr.observaciones, tr.atentido, tr.activo,
+                        up.documento, up.nombres, up.apellido
                     FROM usuarios AS um
                     INNER JOIN medicos AS m ON m.id_usuario = um.id_usuario
                     INNER JOIN turnos_reservas AS tr ON tr.id_medico = m.id_medico
@@ -32,7 +40,8 @@ export default class TurnosReservas {
   };
 
   turnosDeUnPaciente = async (id_usuario) => {
-    const sql = `SELECT tr.fecha_hora, tr.valor_total
+    const sql = `SELECT tr.id_turno_reserva, tr.fecha_hora, tr.valor_total, tr.observaciones, tr.atentido, tr.activo,
+                        tr.id_medico
                         FROM usuarios as u
                         INNER JOIN pacientes AS p ON p.id_usuario = u.id_usuario
                         INNER JOIN turnos_reservas AS tr ON tr.id_paciente = p.id_paciente
@@ -51,7 +60,7 @@ export default class TurnosReservas {
     const [result] = await pool.execute(sql, [id_turno_reserva]);
     return result;
   };
-  
+
   modificarFecha = async (id_turno_reserva, fecha_hora) => {
     const sql = `UPDATE turnos_reservas SET fecha_hora = ? WHERE activo = 1 AND id_turno_reserva = ?`;
     const [result] = await pool.execute(sql, [fecha_hora, id_turno_reserva]);
@@ -67,4 +76,20 @@ export default class TurnosReservas {
     return result;
   };
 
-};
+  actualizarObservaciones = async (
+    id_turno_reserva,
+    id_usuario,
+    observaciones,
+  ) => {
+    const sql = `UPDATE turnos_reservas tr
+                 INNER JOIN medicos m ON m.id_medico = tr.id_medico
+                 SET tr.observaciones = ?
+                 WHERE tr.id_turno_reserva = ? AND m.id_usuario = ?`;
+    const [result] = await pool.execute(sql, [
+      observaciones,
+      id_turno_reserva,
+      id_usuario,
+    ]);
+    return result;
+  };
+}

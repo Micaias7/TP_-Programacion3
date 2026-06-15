@@ -7,10 +7,16 @@ export default class TurnosReservasControlador {
 
   crearTurno = async (req, res) => {
     try {
-      const { id_medico, id_paciente, fecha_hora } = req.body;
-      const turnoReserva = { id_medico, id_paciente, fecha_hora };
+      const { id_medico, id_paciente, fecha_hora, observaciones } = req.body;
+      const turnoReserva = {
+        id_medico,
+        id_paciente,
+        fecha_hora,
+        observaciones,
+      };
 
-      const nuevoTurnoReserva = await this.turnosReservas.crearTurno(turnoReserva);
+      const nuevoTurnoReserva =
+        await this.turnosReservas.crearTurno(turnoReserva);
 
       if (!nuevoTurnoReserva || nuevoTurnoReserva.length === 0) {
         return res.status(400).json({
@@ -26,12 +32,12 @@ export default class TurnosReservasControlador {
       });
     } catch (error) {
       console.log(`Error en POST /turnos-reservas ${error}`);
-        if (error.status) {
-          return res.status(error.status).json({
-            estado: false,
-            mensaje: error.message,
-          });
-        }
+      if (error.status) {
+        return res.status(error.status).json({
+          estado: false,
+          mensaje: error.message,
+        });
+      }
       res.status(500).json({
         estado: false,
         mensaje: "Error interno.",
@@ -170,7 +176,44 @@ export default class TurnosReservasControlador {
         mensaje: "Turno marcado como atendido.",
       });
     } catch (error) {
-      console.log(`Error en PUT /turnos-reservas/medico/:id_turno_reserva ${error}`);
+      console.log(
+        `Error en PUT /turnos-reservas/medico/:id_turno_reserva ${error}`,
+      );
+      res.status(500).json({
+        estado: false,
+        mensaje: "Error interno",
+      });
+    }
+  };
+
+  actualizarObservaciones = async (req, res) => {
+    try {
+      const id_turno_reserva = req.params.id_turno_reserva;
+      const id_usuario = req.user.id_usuario;
+      const { observaciones } = req.body;
+
+      const resultado = await this.turnosReservas.actualizarObservaciones(
+        id_turno_reserva,
+        id_usuario,
+        observaciones,
+      );
+
+      if (!resultado || resultado.affectedRows === 0) {
+        return res.status(404).json({
+          estado: false,
+          mensaje: "Turno no encontrado o no pertenece al médico logueado.",
+        });
+      }
+
+      return res.status(200).json({
+        estado: true,
+        mensaje: "Observaciones actualizadas con éxito.",
+        id: id_turno_reserva,
+      });
+    } catch (error) {
+      console.log(
+        `Error en PUT /turnos-reservas/medico/:id_turno_reserva/observaciones ${error}`,
+      );
       res.status(500).json({
         estado: false,
         mensaje: "Error interno",
