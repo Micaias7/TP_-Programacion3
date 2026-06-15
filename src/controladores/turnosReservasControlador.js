@@ -96,6 +96,23 @@ export default class TurnosReservasControlador {
     }
   };
 
+  historial = async (req, res) => {
+    try {
+      const turnos = await this.turnosReservas.buscarTodas(req.user);
+      res.status(200).json({
+        estado: true,
+        mensaje: "Historial de turnos.",
+        turnos: turnos,
+      });
+    } catch (error) {
+      console.log(`Error en GET /turnos-reservas/historial ${error}`);
+      res.status(500).json({
+        estado: false,
+        mensaje: "Error interno",
+      });
+    }
+  };
+
   desactivarTurno = async (req, res) => {
     try {
       const { id } = req.params;

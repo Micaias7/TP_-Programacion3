@@ -54,6 +54,35 @@ router.get(
 
 /**
  * @swagger
+ * /api/v1/turnos-reservas/historial:
+ *   get:
+ *     summary: Obtener historial de turnos del usuario autenticado
+ *     description: |
+ *       Devuelve el historial completo de turnos para el usuario autenticado.
+ *       - Si es Médico, devuelve los turnos atendidos y la información del paciente.
+ *       - Si es Paciente, devuelve los turnos reservados con el profesional y especialidad.
+ *     tags:
+ *       - Turnos Reservas
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Historial de turnos encontrado
+ *       401:
+ *         description: Token inválido o no proporcionado
+ *       403:
+ *         description: Usuario sin permisos para acceder al recurso
+ *       500:
+ *         description: Error interno del servidor
+ */
+router.get(
+  "/historial",
+  autorizarUsuarios([1, 2]),
+  turnosReservasControlador.historial,
+);
+
+/**
+ * @swagger
  * /api/v1/turnos-reservas:
  *   post:
  *     summary: Crear un turno
