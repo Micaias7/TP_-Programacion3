@@ -61,8 +61,8 @@ export default class TurnosReservas {
   marcarAtendido = async (id_turno_reserva, id_usuario) => {
     const sql = `UPDATE turnos_reservas tr
                  INNER JOIN medicos m ON m.id_medico = tr.id_medico
-                 SET tr.atentido = 1
-                 WHERE tr.id_turno_reserva = ? AND m.id_usuario = ?`;
+                 SET tr.atentido = 1, tr.activo = 0
+                 WHERE tr.id_turno_reserva = ? AND m.id_usuario = ? AND tr.activo = 1`;
     const [result] = await pool.execute(sql, [id_turno_reserva, id_usuario]);
     return result;
   };

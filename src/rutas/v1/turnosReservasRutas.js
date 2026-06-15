@@ -44,7 +44,7 @@ router.put(
 
 /**
  * @swagger
- * /api/v1/turnos-reservas/{id_turno_reserva}:
+ * /api/v1/turnos-reservas/medico/{id_turno_reserva}:
  *   put:
  *     summary: Marcar turno como atendido
  *     description: Permite a un médico logueado marcar un turno como atendido. Solo puede marcar sus propios turnos.
@@ -82,7 +82,7 @@ router.put(
  */
 
 router.put(
-  '/:id_turno_reserva',
+  '/medico/:id_turno_reserva',
   autorizarUsuarios([1]),
   [
     param('id_turno_reserva', 'El id_turno_reserva debe ser un número').isInt({ min: 1 }),
