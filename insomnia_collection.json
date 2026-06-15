@@ -1,0 +1,545 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-06-15T00:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:2026.1.0",
+  "resources": [
+    {
+      "_id": "wrk_tp_programacion3",
+      "_type": "workspace",
+      "name": "TP_-Programacion3 API"
+    },
+    {
+      "_id": "env_base",
+      "_type": "environment",
+      "parentId": "wrk_tp_programacion3",
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:3000",
+        "jwt_token": ""
+      }
+    },
+    {
+      "_id": "req_root",
+      "_type": "request",
+      "parentId": "wrk_tp_programacion3",
+      "name": "API Root",
+      "method": "GET",
+      "url": "{{ base_url }}/",
+      "headers": [],
+      "body": {}
+    },
+    {
+      "_id": "req_auth_login",
+      "_type": "request",
+      "parentId": "wrk_tp_programacion3",
+      "name": "Auth - Login",
+      "method": "POST",
+      "url": "{{ base_url }}/api/v1/auth/login",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"user@dominio.com\",\n  \"contrasenia\": \"password123\"\n}"
+      }
+    },
+    {
+      "_id": "req_auth_register",
+      "_type": "request",
+      "parentId": "wrk_tp_programacion3",
+      "name": "Auth - Register",
+      "method": "POST",
+      "url": "{{ base_url }}/api/v1/auth/register",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nombres\": \"Juan\",\n  \"apellido\": \"Perez\",\n  \"email\": \"juan.perez@dominio.com\",\n  \"contrasenia\": \"password123\",\n  \"rol\": 2,\n  \"foto_path\": \"/uploads/juan.jpg\",\n  \"id_obra_social\": 2\n}"
+      }
+    },
+    {
+      "_id": "req_auth_forgot_password",
+      "_type": "request",
+      "parentId": "wrk_tp_programacion3",
+      "name": "Auth - Forgot Password",
+      "method": "POST",
+      "url": "{{ base_url }}/api/v1/auth/forgot-password",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"juan.perez@dominio.com\"\n}"
+      }
+    },
+    {
+      "_id": "req_auth_reset_password",
+      "_type": "request",
+      "parentId": "wrk_tp_programacion3",
+      "name": "Auth - Reset Password",
+      "method": "POST",
+      "url": "{{ base_url }}/api/v1/auth/reset-password",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"token\": \"REPLACE_WITH_TOKEN\",\n  \"contrasenia\": \"newPassword123\"\n}"
+      }
+    },
+    {
+      "_id": "req_especialidades_list",
+      "_type": "request",
+      "parentId": "wrk_tp_programacion3",
+      "name": "Especialidades - List",
+      "method": "GET",
+      "url": "{{ base_url }}/api/v1/especialidades",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ jwt_token }}"
+        }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_especialidades_get",
+      "_type": "request",
+      "parentId": "wrk_tp_programacion3",
+      "name": "Especialidades - Get by ID",
+      "method": "GET",
+      "url": "{{ base_url }}/api/v1/especialidades/1",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ jwt_token }}"
+        }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_especialidades_create",
+      "_type": "request",
+      "parentId": "wrk_tp_programacion3",
+      "name": "Especialidades - Create",
+      "method": "POST",
+      "url": "{{ base_url }}/api/v1/especialidades",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ jwt_token }}"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nombre\": \"CARDIOLOGÍA\"\n}"
+      }
+    },
+    {
+      "_id": "req_especialidades_update",
+      "_type": "request",
+      "parentId": "wrk_tp_programacion3",
+      "name": "Especialidades - Update",
+      "method": "PUT",
+      "url": "{{ base_url }}/api/v1/especialidades/1",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ jwt_token }}"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nombre\": \"CARDIOLOGÍA ACTUALIZADA\"\n}"
+      }
+    },
+    {
+      "_id": "req_especialidades_delete",
+      "_type": "request",
+      "parentId": "wrk_tp_programacion3",
+      "name": "Especialidades - Delete",
+      "method": "DELETE",
+      "url": "{{ base_url }}/api/v1/especialidades/1",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ jwt_token }}"
+        }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_obras_sociales_list",
+      "_type": "request",
+      "parentId": "wrk_tp_programacion3",
+      "name": "Obras Sociales - List",
+      "method": "GET",
+      "url": "{{ base_url }}/api/v1/obras-sociales",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ jwt_token }}"
+        }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_obras_sociales_get",
+      "_type": "request",
+      "parentId": "wrk_tp_programacion3",
+      "name": "Obras Sociales - Get by ID",
+      "method": "GET",
+      "url": "{{ base_url }}/api/v1/obras-sociales/1",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ jwt_token }}"
+        }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_obras_sociales_create",
+      "_type": "request",
+      "parentId": "wrk_tp_programacion3",
+      "name": "Obras Sociales - Create",
+      "method": "POST",
+      "url": "{{ base_url }}/api/v1/obras-sociales",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ jwt_token }}"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nombre\": \"OSDE\",\n  \"descripcion\": \"Obra social OSDE\",\n  \"porcentaje_descuento\": 10.0,\n  \"es_particular\": false\n}"
+      }
+    },
+    {
+      "_id": "req_obras_sociales_update",
+      "_type": "request",
+      "parentId": "wrk_tp_programacion3",
+      "name": "Obras Sociales - Update",
+      "method": "PUT",
+      "url": "{{ base_url }}/api/v1/obras-sociales/1",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ jwt_token }}"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nombre\": \"OSDE ACTUALIZADA\",\n  \"descripcion\": \"Obra social OSDE actualizada\",\n  \"porcentaje_descuento\": 12.5,\n  \"es_particular\": false\n}"
+      }
+    },
+    {
+      "_id": "req_obras_sociales_associate_patient",
+      "_type": "request",
+      "parentId": "wrk_tp_programacion3",
+      "name": "Obras Sociales - Associate Patient",
+      "method": "PUT",
+      "url": "{{ base_url }}/api/v1/obras-sociales/1/pacientes/5",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ jwt_token }}"
+        }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_obras_sociales_delete",
+      "_type": "request",
+      "parentId": "wrk_tp_programacion3",
+      "name": "Obras Sociales - Delete",
+      "method": "DELETE",
+      "url": "{{ base_url }}/api/v1/obras-sociales/1",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ jwt_token }}"
+        }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_medicos_list",
+      "_type": "request",
+      "parentId": "wrk_tp_programacion3",
+      "name": "Medicos - List",
+      "method": "GET",
+      "url": "{{ base_url }}/api/v1/medicos",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ jwt_token }}"
+        }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_medicos_by_specialty",
+      "_type": "request",
+      "parentId": "wrk_tp_programacion3",
+      "name": "Medicos - By Specialty",
+      "method": "GET",
+      "url": "{{ base_url }}/api/v1/medicos/especialidad/1",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ jwt_token }}"
+        }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_medicos_get",
+      "_type": "request",
+      "parentId": "wrk_tp_programacion3",
+      "name": "Medicos - Get by ID",
+      "method": "GET",
+      "url": "{{ base_url }}/api/v1/medicos/1",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ jwt_token }}"
+        }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_medicos_associate_obras_sociales",
+      "_type": "request",
+      "parentId": "wrk_tp_programacion3",
+      "name": "Medicos - Associate Obras Sociales",
+      "method": "POST",
+      "url": "{{ base_url }}/api/v1/medicos/1/obras-sociales",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ jwt_token }}"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"obras_sociales\": [\n    { \"id_obra_social\": 1 },\n    { \"id_obra_social\": 2 }\n  ]\n}"
+      }
+    },
+    {
+      "_id": "req_medicos_associate_specialty",
+      "_type": "request",
+      "parentId": "wrk_tp_programacion3",
+      "name": "Medicos - Associate Specialty",
+      "method": "PUT",
+      "url": "{{ base_url }}/api/v1/medicos/1/especialidad",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ jwt_token }}"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"id_especialidad\": 1\n}"
+      }
+    },
+    {
+      "_id": "req_turnos_list",
+      "_type": "request",
+      "parentId": "wrk_tp_programacion3",
+      "name": "Turnos - List",
+      "method": "GET",
+      "url": "{{ base_url }}/api/v1/turnos-reservas",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ jwt_token }}"
+        }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_turnos_history",
+      "_type": "request",
+      "parentId": "wrk_tp_programacion3",
+      "name": "Turnos - History",
+      "method": "GET",
+      "url": "{{ base_url }}/api/v1/turnos-reservas/historial",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ jwt_token }}"
+        }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_turnos_create_admin",
+      "_type": "request",
+      "parentId": "wrk_tp_programacion3",
+      "name": "Turnos - Create (Admin)",
+      "method": "POST",
+      "url": "{{ base_url }}/api/v1/turnos-reservas",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ jwt_token }}"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"id_medico\": 1,\n  \"id_paciente\": 5,\n  \"fecha_hora\": \"2026-07-10 15:30:00\",\n  \"observaciones\": \"Paciente con dolor leve.\"\n}"
+      }
+    },
+    {
+      "_id": "req_turnos_create_patient",
+      "_type": "request",
+      "parentId": "wrk_tp_programacion3",
+      "name": "Turnos - Create (Patient)",
+      "method": "POST",
+      "url": "{{ base_url }}/api/v1/turnos-reservas/mis-turnos",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ jwt_token }}"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"id_medico\": 1,\n  \"fecha_hora\": \"2026-07-10 15:30:00\"\n}"
+      }
+    },
+    {
+      "_id": "req_turnos_update_date",
+      "_type": "request",
+      "parentId": "wrk_tp_programacion3",
+      "name": "Turnos - Update Date",
+      "method": "PUT",
+      "url": "{{ base_url }}/api/v1/turnos-reservas/1",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ jwt_token }}"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"fecha_hora\": \"2026-07-20 17:00:00\"\n}"
+      }
+    },
+    {
+      "_id": "req_turnos_mark_attended",
+      "_type": "request",
+      "parentId": "wrk_tp_programacion3",
+      "name": "Turnos - Mark Attended",
+      "method": "PUT",
+      "url": "{{ base_url }}/api/v1/turnos-reservas/medico/1",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ jwt_token }}"
+        }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_turnos_add_observations",
+      "_type": "request",
+      "parentId": "wrk_tp_programacion3",
+      "name": "Turnos - Add Observations",
+      "method": "PUT",
+      "url": "{{ base_url }}/api/v1/turnos-reservas/medico/1/observaciones",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ jwt_token }}"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"observaciones\": \"Paciente evoluciona bien, continuar con control en 15 días.\"\n}"
+      }
+    },
+    {
+      "_id": "req_turnos_delete",
+      "_type": "request",
+      "parentId": "wrk_tp_programacion3",
+      "name": "Turnos - Delete",
+      "method": "DELETE",
+      "url": "{{ base_url }}/api/v1/turnos-reservas/1",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ jwt_token }}"
+        }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_docs",
+      "_type": "request",
+      "parentId": "wrk_tp_programacion3",
+      "name": "Swagger Docs",
+      "method": "GET",
+      "url": "{{ base_url }}/api/v1/docs",
+      "headers": [],
+      "body": {}
+    }
+  ]
+}
