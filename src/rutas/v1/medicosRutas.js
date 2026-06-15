@@ -8,10 +8,50 @@ const router = express.Router();
 
 const medicosControlador = new MedicosControlador();
 
+/**
+ * @swagger
+ * /api/v1/medicos:
+ *   get:
+ *     summary: Obtener todos los médicos
+ *     tags:
+ *       - Medicos
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Lista de médicos
+ *       500:
+ *         description: Error interno
+ */
+
 router.get("/",
   autorizarUsuarios([2, 3]),
   medicosControlador.buscarTodos
 );
+
+/**
+ * @swagger
+ * /api/v1/medicos/especialidad/{id_especialidad}:
+ *   get:
+ *     summary: Obtener médicos por especialidad
+ *     tags:
+ *       - Medicos
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id_especialidad
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Lista de médicos de la especialidad
+ *       404:
+ *         description: No hay médicos de esa especialidad
+ *       500:
+ *         description: Error interno
+ */
 
 router.get(
   "/especialidad/:id_especialidad",
@@ -24,6 +64,30 @@ router.get(
   ],
   medicosControlador.buscarPorEspecialidad,
 );
+
+/**
+ * @swagger
+ * /api/v1/medicos/{id_medico}:
+ *   get:
+ *     summary: Obtener médico por ID
+ *     tags:
+ *       - Medicos
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id_medico
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Médico encontrado
+ *       404:
+ *         description: Médico no encontrado
+ *       500:
+ *         description: Error interno
+ */
 
 router.get(
   "/:id_medico",
@@ -39,6 +103,44 @@ router.get(
   medicosControlador.buscarPorId,
 );
 
+/**
+ * @swagger
+ * /api/v1/medicos/{id_medico}/obras-sociales:
+ *   post:
+ *     summary: Asociar obras sociales a un médico
+ *     tags:
+ *       - Medicos
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id_medico
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               obras_sociales:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     id_obra_social:
+ *                       type: integer
+ *                       example: 1
+ *     responses:
+ *       201:
+ *         description: Médico y obras sociales relacionadas
+ *       400:
+ *         description: No se crearon las relaciones
+ *       500:
+ *         description: Error interno
+ */
 
 router.post(
   "/:id_medico/obras-sociales",
@@ -63,6 +165,40 @@ router.post(
   ],
   medicosControlador.asociarMedicoObrasSociales,
 );
+
+/**
+ * @swagger
+ * /api/v1/medicos/{id_medico}/especialidad:
+ *   put:
+ *     summary: Asociar especialidad a un médico
+ *     tags:
+ *       - Medicos
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id_medico
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id_especialidad:
+ *                 type: integer
+ *                 example: 1
+ *     responses:
+ *       200:
+ *         description: Especialidad asociada
+ *       404:
+ *         description: Médico no encontrado
+ *       500:
+ *         description: Error interno
+ */
 
 router.put(
   "/:id_medico/especialidad",

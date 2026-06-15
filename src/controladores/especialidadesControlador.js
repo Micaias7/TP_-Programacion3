@@ -12,6 +12,7 @@ export default class EspecialidadesControlador {
       const especialidades = await this.especialidades.buscarTodas();
       res.status(200).json({
         'estado': true,
+        'msg': 'Lista de especialidades',
         'especialidades': especialidades
       });
       
@@ -36,6 +37,7 @@ export default class EspecialidadesControlador {
 
       res.status(200).json({
         'estado': true,
+        'msg': 'Especialidad encontrada',
         'especialidades': especialidadesPorId
       });
         

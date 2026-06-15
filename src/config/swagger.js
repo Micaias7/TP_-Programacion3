@@ -5,9 +5,9 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'TP Programacion 3',
-      version: '1.0.0',
-      description: 'API de turnos médicos',
+      title: 'Programacion 3 - Trabajo Final Integrador',
+      version: 'Grupo AS',
+      description: 'Micaias Gutierrez, Yamila Ayi, German Cepeda, Emiliana Abril Baglioni, Francisco Daniel Molina',
     },
     components: {
       securitySchemes: {

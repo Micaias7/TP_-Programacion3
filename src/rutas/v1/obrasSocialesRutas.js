@@ -9,10 +9,50 @@ const router = express.Router();
 
 const obrasSocialesControlador = new ObrasSocialesControlador();
 
+/**
+ * @swagger
+ * /api/v1/obras-sociales:
+ *   get:
+ *     summary: Obtener todas las obras sociales
+ *     tags:
+ *       - Obras Sociales
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Lista de obras sociales
+ *       500:
+ *         description: Error interno
+ */
+
 router.get("/",
   autorizarUsuarios([3]),
   obrasSocialesControlador.buscarTodas
 );
+
+/**
+ * @swagger
+ * /api/v1/obras-sociales/{id_obra_social}:
+ *   get:
+ *     summary: Obtener obra social por ID
+ *     tags:
+ *       - Obras Sociales
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id_obra_social
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Obra social encontrada
+ *       404:
+ *         description: Obra social no encontrada
+ *       500:
+ *         description: Error interno
+ */
 
 router.get(
   "/:id_obra_social",
@@ -21,6 +61,49 @@ router.get(
   validarCampos,
   obrasSocialesControlador.buscarPorId,
 );
+
+/**
+ * @swagger
+ * /api/v1/obras-sociales/{id_obra_social}:
+ *   put:
+ *     summary: Editar una obra social
+ *     tags:
+ *       - Obras Sociales
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id_obra_social
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nombre:
+ *                 type: string
+ *                 example: OSDE
+ *               descripcion:
+ *                 type: string
+ *                 example: Obra social OSDE
+ *               porcentaje_descuento:
+ *                 type: number
+ *                 example: 10.00
+ *               es_particular:
+ *                 type: boolean
+ *                 example: false
+ *     responses:
+ *       200:
+ *         description: Obra social modificada
+ *       404:
+ *         description: Obra social no encontrada
+ *       500:
+ *         description: Error interno
+ */
 
 router.put(
   "/:id_obra_social",
@@ -31,6 +114,41 @@ router.put(
   obrasSocialesControlador.actualizar,
 );
 
+/**
+ * @swagger
+ * /api/v1/obras-sociales:
+ *   post:
+ *     summary: Crear una obra social
+ *     tags:
+ *       - Obras Sociales
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nombre:
+ *                 type: string
+ *                 example: OSDE
+ *               descripcion:
+ *                 type: string
+ *                 example: Obra social OSDE
+ *               porcentaje_descuento:
+ *                 type: number
+ *                 example: 10.00
+ *               es_particular:
+ *                 type: boolean
+ *                 example: false
+ *     responses:
+ *       201:
+ *         description: Obra social creada
+ *       500:
+ *         description: Error interno
+ */
+
 router.post(
   "/",
   autorizarUsuarios([3]),
@@ -38,6 +156,30 @@ router.post(
   validarCampos,
   obrasSocialesControlador.crearObraSocial,
 );
+
+/**
+ * @swagger
+ * /api/v1/obras-sociales/{id_obra_social}:
+ *   delete:
+ *     summary: Desactivar una obra social
+ *     tags:
+ *       - Obras Sociales
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id_obra_social
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Obra social desactivada
+ *       404:
+ *         description: Obra social no encontrada
+ *       500:
+ *         description: Error interno
+ */
 
 router.delete(
   "/:id_obra_social",

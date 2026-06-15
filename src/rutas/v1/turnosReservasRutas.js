@@ -9,7 +9,57 @@ const router = express.Router();
 
 const turnosReservasControlador = new TurnosReservasControlador();
 
+/**
+ * @swagger
+ * /api/v1/turnos-reservas:
+ *   get:
+ *     summary: Obtener todos los turnos
+ *     tags:
+ *       - Turnos Reservas
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Lista de turnos
+ *       500:
+ *         description: Error interno
+ */
+
 router.get('/', autorizarUsuarios([1, 2]), turnosReservasControlador.buscarTodos);
+
+/**
+ * @swagger
+ * /api/v1/turnos-reservas:
+ *   post:
+ *     summary: Crear un turno
+ *     tags:
+ *       - Turnos Reservas
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id_medico:
+ *                 type: integer
+ *                 example: 1
+ *               id_paciente:
+ *                 type: integer
+ *                 example: 1
+ *               fecha_hora:
+ *                 type: string
+ *                 example: 2026-06-15 10:00:00
+ *     responses:
+ *       201:
+ *         description: Turno creado
+ *       400:
+ *         description: No se pudo crear el turno
+ *       500:
+ *         description: Error interno
+ */
 
 router.post(
   "/",
@@ -30,7 +80,6 @@ router.post(
  * /api/v1/turnos-reservas/{id_turno_reserva}:
  *   put:
  *     summary: Marcar turno como atendido
- *     description: Permite a un médico logueado marcar un turno como atendido. Solo puede marcar sus propios turnos.
  *     tags:
  *       - Turnos Reservas
  *     security:
@@ -41,23 +90,9 @@ router.post(
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID del turno a marcar como atendido
  *     responses:
  *       200:
  *         description: Turno marcado como atendido
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 estado:
- *                   type: boolean
- *                   example: true
- *                 mensaje:
- *                   type: string
- *                   example: Turno marcado como atendido.
- *       403:
- *         description: Acceso denegado
  *       404:
  *         description: Turno no encontrado o no pertenece al médico logueado
  *       500:
