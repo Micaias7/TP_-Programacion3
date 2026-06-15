@@ -13,6 +13,12 @@ export default class Medicos {
     return medico[0];
   };
 
+  crearMedico = async (id_usuario, id_especialidad = null, conexion = pool) => {
+    const sql = `INSERT INTO medicos (id_usuario, id_especialidad) VALUES (?, ?)`;
+    const [result] = await conexion.execute(sql, [id_usuario, id_especialidad]);
+    return result;
+  };
+
   buscarPorEspecialidad = async (id_especialidad) => {
     const sql = `SELECT u.apellido, u.nombres, u.email, u.foto_path
                   FROM medicos AS m
@@ -61,4 +67,4 @@ export default class Medicos {
 
     return rows;
   };
-};
+}

@@ -18,4 +18,18 @@ export default class Pacientes {
 
     return pacientes[0];
   };
-};
+
+  crearPaciente = async (
+    id_usuario,
+    id_obra_social = null,
+    conexion = pool,
+  ) => {
+    const sql = `
+      INSERT INTO pacientes (id_usuario, id_obra_social)
+      VALUES (?, ?)
+    `;
+
+    const [result] = await conexion.execute(sql, [id_usuario, id_obra_social]);
+    return result;
+  };
+}

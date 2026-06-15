@@ -142,4 +142,21 @@ export default class TurnosReservasServicio {
       buffer: pdf,
     };
   };
-};
+  
+  actualizarObservaciones = async (
+    id_turno_reserva,
+    id_usuario,
+    observaciones,
+  ) => {
+    const turno = await this.turnosReservas.buscarPorId(id_turno_reserva);
+    if (!turno || turno.length === 0) {
+      return null;
+    }
+
+    return await this.turnosReservas.actualizarObservaciones(
+      id_turno_reserva,
+      id_usuario,
+      observaciones,
+    );
+  };
+}
