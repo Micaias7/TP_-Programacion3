@@ -3,6 +3,7 @@ import express from "express";
 import morgan from "morgan";
 import fs from "fs";
 import passport from "passport";
+import { specs, swaggerUi } from './config/swagger.js';
 
 // IMPORTAMOS LA ESTRATEGIA A USAR Y LA FORMA DE VALIDAR.
 import { estrategia, validacion } from "./config/passport.js";
@@ -43,5 +44,8 @@ app.use("/api/v1/medicos", passport.authenticate('jwt', {session:false}), v1Medi
 app.use('/api/v1/turnos-reservas', passport.authenticate('jwt', {session:false}), v1TurnosReservas);
 
 app.use('/api/v1/auth', v1AuthRutas);
+
+app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(specs));
+
 
 export default app;

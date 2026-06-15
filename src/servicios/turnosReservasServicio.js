@@ -66,4 +66,9 @@ export default class TurnosReservasServicio {
     const id_nuevo = await this.turnosReservas.crear(turnoReserva);
     return id_nuevo;
   };
+
+  marcarAtendido = async (id_turno_reserva, id_usuario) => {
+    return await this.turnosReservas.marcarAtendido(id_turno_reserva, id_usuario);
+  };
+
 };

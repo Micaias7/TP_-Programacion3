@@ -107,4 +107,33 @@ export default class TurnosReservasControlador {
       });
     };
   };
-};
+
+  marcarAtendido = async (req, res) => {
+    try {
+      const id_turno_reserva = req.params.id_turno_reserva;
+      const id_usuario = req.user.id_usuario;
+
+      const result = await this.turnosReservas.marcarAtendido(id_turno_reserva, id_usuario);
+
+      if (result.affectedRows === 0) {
+        return res.status(404).json({
+          estado: false,
+          mensaje: "Turno no encontrado o no pertenece al médico logueado.",
+        });
+      }
+
+      res.status(200).json({
+        estado: true,
+        mensaje: "Turno marcado como atendido.",
+      });
+
+    } catch (error) {
+      console.log(`Error en PUT /turnos-reservas/:id_turno_reserva ${error}`);
+      res.status(500).json({
+        estado: false,
+        mensaje: "Error interno",
+      });
+    }
+  };
+
+}
