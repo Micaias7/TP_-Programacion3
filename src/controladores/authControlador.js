@@ -71,4 +71,44 @@ export default class AuthController {
       });
     }
   };
+
+  solicitarRestablecerContrasenia = async (req, res) => {
+    try {
+      const { email } = req.body;
+      const usuariosServicio = new UsuariosServicio();
+      const token =
+        await usuariosServicio.solicitarRestablecerContrasenia(email);
+
+      return res.status(200).json({
+        estado: true,
+        mensaje: "Token de restablecimiento generado correctamente.",
+        token,
+      });
+    } catch (error) {
+      console.log(`Error en POST /auth/forgot-password ${error}`);
+      return res.status(400).json({
+        estado: false,
+        mensaje: error.message || "No se pudo generar el token.",
+      });
+    }
+  };
+
+  restablecerContrasenia = async (req, res) => {
+    try {
+      const { token, contrasenia } = req.body;
+      const usuariosServicio = new UsuariosServicio();
+      await usuariosServicio.restablecerContrasenia({ token, contrasenia });
+
+      return res.status(200).json({
+        estado: true,
+        mensaje: "Contraseña restablecida correctamente.",
+      });
+    } catch (error) {
+      console.log(`Error en POST /auth/reset-password ${error}`);
+      return res.status(400).json({
+        estado: false,
+        mensaje: error.message || "No se pudo restablecer la contraseña.",
+      });
+    }
+  };
 }

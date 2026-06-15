@@ -147,4 +147,33 @@ router.post(
   authController.registrar,
 );
 
+router.post(
+  "/forgot-password",
+  [
+    check("email")
+      .notEmpty()
+      .withMessage("El correo electrónico es requerido!.")
+      .isEmail()
+      .withMessage("Revisar el formato del correo electrónico."),
+    validarCampos,
+  ],
+  authController.solicitarRestablecerContrasenia,
+);
+
+router.post(
+  "/reset-password",
+  [
+    check("token")
+      .notEmpty()
+      .withMessage("El token de restablecimiento es obligatorio."),
+    check("contrasenia")
+      .notEmpty()
+      .withMessage("La contraseña es requerida.")
+      .isLength({ min: 6 })
+      .withMessage("La contraseña debe tener al menos 6 caracteres."),
+    validarCampos,
+  ],
+  authController.restablecerContrasenia,
+);
+
 export { router };

@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import Usuarios from "../db/usuarios.js";
 import Medicos from "../db/medicos.js";
 import Pacientes from "../db/pacientes.js";
@@ -20,6 +21,56 @@ export default class UsuariosServicio {
 
   buscar = (email, contrasenia) => {
     return this.usuarios.buscar(email, contrasenia);
+  };
+
+  solicitarRestablecerContrasenia = async (email) => {
+    const usuario = await this.buscarPorEmail(email);
+    if (!usuario) {
+      throw new Error("No existe ningún usuario con ese correo electrónico.");
+    }
+
+    const token = crypto.randomBytes(32).toString("hex");
+    const expiracion = new Date(Date.now() + 60 * 60 * 1000); // 1 hora
+
+    await this.usuarios.guardarTokenRestablecimiento(
+      usuario.id_usuario,
+      token,
+      expiracion,
+    );
+
+    return token;
+  };
+
+  restablecerContrasenia = async ({ token, contrasenia }) => {
+    const usuario = await this.usuarios.buscarPorTokenReset(token);
+    if (!usuario) {
+      throw new Error("Token de restablecimiento inválido.");
+    }
+
+    const ahora = new Date();
+    if (
+      !usuario.reset_token_expiration ||
+      new Date(usuario.reset_token_expiration) < ahora
+    ) {
+      throw new Error("El token de restablecimiento ha expirado.");
+    }
+
+    const conexion = await pool.getConnection();
+    try {
+      await conexion.beginTransaction();
+      await this.usuarios.actualizarContrasenia(
+        usuario.id_usuario,
+        contrasenia,
+        conexion,
+      );
+      await conexion.commit();
+      await conexion.release();
+      return true;
+    } catch (error) {
+      await conexion.rollback();
+      await conexion.release();
+      throw error;
+    }
   };
 
   registrar = async ({
