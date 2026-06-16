@@ -31,6 +31,8 @@ export default class EspecialidadesServicio {
       return null;
     };
 
+    const nombreNormalizado = nombre.trim().replace(/\s+/g, " ").toUpperCase();
+
     return this.especialidades.editarEspecialidad(id_especialidad, nombre);
   };
 

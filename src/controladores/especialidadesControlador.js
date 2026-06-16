@@ -85,7 +85,7 @@ export default class EspecialidadesControlador {
         nombre,
       );
 
-      if (!result) {
+      if (!result === null) {
         return res
           .status(404)
           .json({ estado: false, msg: "Especialidad no encontrada" });
@@ -104,7 +104,7 @@ export default class EspecialidadesControlador {
       const result =
         await this.especialidades.eliminarEspecialidad(id_especialidad);
 
-      if (!result) {
+      if (!result || result.affectedRows === 0) {
         return res
           .status(404)
           .json({ estado: false, msg: "Especialidad no encontrada" });
