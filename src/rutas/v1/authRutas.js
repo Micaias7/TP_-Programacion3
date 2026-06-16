@@ -147,6 +147,59 @@ router.post(
   authController.registrar,
 );
 
+/**
+ * @swagger
+ * /api/v1/auth/forgot-password:
+ *   post:
+ *     summary: Solicitar restablecimiento de contraseña
+ *     description: Genera un token de restablecimiento para un usuario registrado.
+ *     tags:
+ *       - Auth
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: usuario@correo.com
+ *     responses:
+ *       200:
+ *         description: Token generado correctamente.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 estado:
+ *                   type: boolean
+ *                   example: true
+ *                 mensaje:
+ *                   type: string
+ *                   example: Token de restablecimiento generado correctamente.
+ *                 token:
+ *                   type: string
+ *                   example: a3f8b5d7c9e1f4...
+ *       400:
+ *         description: Error de validación o usuario inexistente.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 estado:
+ *                   type: boolean
+ *                   example: false
+ *                 mensaje:
+ *                   type: string
+ *                   example: No existe ningún usuario con ese correo electrónico.
+ */
+
 router.post(
   "/forgot-password",
   [
@@ -159,6 +212,60 @@ router.post(
   ],
   authController.solicitarRestablecerContrasenia,
 );
+
+/**
+ * @swagger
+ * /api/v1/auth/reset-password:
+ *   post:
+ *     summary: Restablecer contraseña
+ *     description: Permite establecer una nueva contraseña utilizando un token de restablecimiento válido.
+ *     tags:
+ *       - Auth
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - token
+ *               - contrasenia
+ *             properties:
+ *               token:
+ *                 type: string
+ *                 example: 8d9f3b7c2e4a5f6d7c8b9a0e1f2d3c4b
+ *               contrasenia:
+ *                 type: string
+ *                 minLength: 6
+ *                 example: NuevaClave123
+ *     responses:
+ *       200:
+ *         description: Contraseña restablecida correctamente.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 estado:
+ *                   type: boolean
+ *                   example: true
+ *                 mensaje:
+ *                   type: string
+ *                   example: Contraseña restablecida correctamente.
+ *       400:
+ *         description: Token inválido, expirado o datos incorrectos.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 estado:
+ *                   type: boolean
+ *                   example: false
+ *                 mensaje:
+ *                   type: string
+ *                   example: El token de restablecimiento ha expirado.
+ */
 
 router.post(
   "/reset-password",
