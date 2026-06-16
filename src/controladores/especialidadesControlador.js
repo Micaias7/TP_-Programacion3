@@ -1,4 +1,6 @@
+import apicache from 'apicache';
 import EspecialidadesServicio from "../servicios/especialidadesServicio.js";
+
 
 export default class EspecialidadesControlador {
   constructor() {
@@ -64,8 +66,8 @@ export default class EspecialidadesControlador {
 
       return res.status(201).json({
         estado: true,
-          msg: `Especialidad '${nombre}' creada con éxito.`,
-          id: nuevaEspecialidad.insertId
+        msg: `Especialidad '${nombre}' creada con éxito.`,
+        id: nuevaEspecialidad.insertId
       });
     } catch (error) {
       return res.status(500).json({
@@ -75,7 +77,7 @@ export default class EspecialidadesControlador {
     };
   };
 
-  editarEspecialidad = async (req, res) => {
+ editarEspecialidad = async (req, res) => {
     try {
       const { id_especialidad } = req.params;
       const { nombre } = req.body;
@@ -85,15 +87,26 @@ export default class EspecialidadesControlador {
         nombre,
       );
 
-      if (!result === null) {
+      if (result === null) {
         return res
           .status(404)
           .json({ estado: false, msg: "Especialidad no encontrada" });
       }
 
-      res.status(200).json({ estado: true, msg: `Especialidad modificada` });
+      if (result.changedRows === 0) {
+        return res.status(400).json({
+          estado: false,
+          msg: "No se realizaron cambios (el nombre es idéntico o hubo un problema con los datos)"
+        });
+      }
+      
+      apicache.clear();
+
+      return res.status(200).json({ estado: true, msg: `Especialidad modificada` });
+
     } catch (error) {
-      res.status(500).json({ estado: false, msg: "Error interno" });
+      console.error("Error en editarEspecialidad:", error);
+      return res.status(500).json({ estado: false, msg: "Error interno" });
     }
   };
 
