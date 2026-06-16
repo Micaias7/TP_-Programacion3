@@ -4,6 +4,7 @@ import UsuariosServicio from "../../servicios/usuariosServicio.js";
 
 import { check } from "express-validator";
 import { validarCampos } from "../../middlewares/validarCampos.js";
+import { upload } from "../../middlewares/multerConfig.js";
 
 const router = express.Router();
 const authController = new AuthController();
@@ -101,6 +102,7 @@ router.post(
  */
 router.post(
   "/register",
+  upload.single("foto"),
   [
     check("nombres").notEmpty().withMessage("El nombre es obligatorio."),
     check("apellido").notEmpty().withMessage("El apellido es obligatorio."),
