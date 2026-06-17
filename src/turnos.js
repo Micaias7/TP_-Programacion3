@@ -18,6 +18,7 @@ import { router as v1MedicosRutas } from "./rutas/v1/medicosRutas.js";
 import { router as v1TurnosReservas } from "./rutas/v1/turnosReservasRutas.js";
 import { router as v1AuthRutas } from "./rutas/v1/authRutas.js";
 import { log } from "./middlewares/multerConfig.js";
+import { router as v1UsuariosRutas } from "./rutas/v1/usuariosRutas.js";
 // import { check, param } from "express-validator";
 // import { validarCampos } from "./middlewares/validarCampos.js";
 
@@ -58,6 +59,11 @@ app.use(
   "/api/v1/turnos-reservas",
   passport.authenticate("jwt", { session: false }),
   v1TurnosReservas,
+);
+
+app.use("/api/v1/usuarios",  
+  passport.authenticate("jwt", { session: false }),
+  v1UsuariosRutas,
 );
 
 app.use("/api/v1/auth", v1AuthRutas);
