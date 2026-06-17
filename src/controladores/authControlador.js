@@ -37,12 +37,12 @@ export default class AuthController {
         email,
         contrasenia,
         rol,
-        foto_path,
         id_especialidad,
         id_obra_social,
       } = req.body;
 
       const usuariosServicio = new UsuariosServicio();
+      const foto_path = req.file ? req.file.path : null;
       const nuevoUsuario = await usuariosServicio.registrar({
         nombres,
         apellido,
