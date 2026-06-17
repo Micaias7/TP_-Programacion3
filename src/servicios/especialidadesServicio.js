@@ -27,11 +27,13 @@ export default class EspecialidadesServicio {
 
     const especialidad = await this.especialidades.buscarPorId(id_especialidad);
 
-    if (especialidad.length === 0) {
+    if (!especialidad || especialidad.length === 0) {
       return null;
     };
 
-    return this.especialidades.editarEspecialidad(id_especialidad, nombre);
+    const nombreNormalizado = nombre.trim().replace(/\s+/g, " ").toUpperCase();
+
+    return this.especialidades.editarEspecialidad(id_especialidad, nombreNormalizado);
   };
 
   eliminarEspecialidad = async (id_especialidad) => {
